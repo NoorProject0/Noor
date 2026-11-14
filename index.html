@@ -1,0 +1,135 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f4f7fb"><meta name="description" content="رها؛ همراه آفلاین شما"><link rel="manifest" href="./manifest.json"><link rel="icon" href="./icons/raha.svg"><link rel="apple-touch-icon" href="./icons/raha-192.png">
+<title>Raha | رها</title>
+<style>
+/* Layout: glass cards on a soft blue wash. Home = four tiles; each tile opens one panel via the URL hash, so the Back button works. */
+:root{
+  --bg:#f4f7fb;--glass:rgba(255,255,255,.62);--glass2:rgba(255,255,255,.84);--line:rgba(255,255,255,.95);--edge:rgba(80,110,145,.18);
+  --ink:#263346;--muted:#5d6b7d;--blue:#3d6794;--wash:rgba(134,174,215,.16);--shadow:0 18px 50px rgba(65,92,125,.10);
+  --g1:#dceafa;--g2:#e5edf7;--g3:#fafcff;--g4:#edf3fa;--warn-bg:#fef3c7;--warn-fg:#7a4b00;
+  --font:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111b29;--glass:rgba(28,43,62,.55);--glass2:rgba(28,43,62,.8);--line:rgba(255,255,255,.13);--edge:rgba(255,255,255,.12);
+  --ink:#edf3fa;--muted:#a9b6c6;--blue:#b2cce8;--wash:rgba(140,181,222,.13);--shadow:0 18px 50px rgba(0,0,0,.25);
+  --g1:#253d58;--g2:#16243a;--g3:#111b29;--g4:#111b29;--warn-bg:#3a2c0b;--warn-fg:#f5cf7a;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111b29;--glass:rgba(28,43,62,.55);--glass2:rgba(28,43,62,.8);--line:rgba(255,255,255,.13);--edge:rgba(255,255,255,.12);
+  --ink:#edf3fa;--muted:#a9b6c6;--blue:#b2cce8;--wash:rgba(140,181,222,.13);--shadow:0 18px 50px rgba(0,0,0,.25);
+  --g1:#253d58;--g2:#16243a;--g3:#111b29;--g4:#111b29;--warn-bg:#3a2c0b;--warn-fg:#f5cf7a;color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:var(--font);line-height:1.75;background-color:var(--bg);
+  background-image:radial-gradient(ellipse at 12% 8%,var(--g1) 0,transparent 38%),radial-gradient(ellipse at 90% 30%,var(--g2) 0,transparent 35%),linear-gradient(135deg,var(--g3),var(--g4));
+  background-attachment:fixed;padding-block:26px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button,a{font:inherit}button{cursor:pointer}
+a:focus-visible,button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.wrap{max-width:900px;margin:0 auto}
+.glass{background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(25px) saturate(155%);-webkit-backdrop-filter:blur(25px) saturate(155%);box-shadow:var(--shadow)}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:34px;gap:12px}
+.brand{display:flex;gap:11px;align-items:center}
+.mark{width:42px;height:42px;border-radius:15px;display:grid;place-items:center;background:var(--glass2);border:1px solid var(--line);color:var(--blue);font-size:20px}
+.name{font-size:21px;font-weight:650;line-height:1.4}.name span{font-weight:400;color:var(--muted)}
+.tag{font-size:12px;color:var(--muted)}
+.round{width:40px;height:40px;padding:0;border-radius:14px;border:1px solid var(--line);background:var(--glass2);color:var(--ink);display:grid;place-items:center}
+.round svg{width:20px;height:20px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.hero{text-align:center;border-radius:27px;padding:32px 16px 27px;margin-bottom:25px}
+.hero h1{font-size:clamp(24px,4vw,34px);font-weight:560;margin:0 0 7px;line-height:1.5;text-wrap:balance}
+.hero p{font-size:14px;color:var(--muted);margin:0}
+.pill{display:inline-block;margin-top:17px;padding:5px 13px;border-radius:30px;border:1px solid var(--line);background:var(--glass2);font-size:12px;color:var(--muted)}
+.heading{display:flex;justify-content:space-between;margin:22px 4px 12px;font-size:14px;font-weight:650}
+.heading small{font-weight:400;color:var(--muted);font-size:12px}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+.tile{border-radius:21px;min-height:137px;padding:18px 15px;text-align:right;color:var(--ink);text-decoration:none;display:flex;flex-direction:column;align-items:flex-start;transition:transform .15s}
+.tile:hover{transform:translateY(-2px)}
+.tile .ico{width:37px;height:37px;border-radius:13px;background:var(--wash);display:grid;place-items:center;color:var(--blue);margin-bottom:12px}
+.tile .ico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tile b{font-size:14px}.tile small{font-size:12px;color:var(--muted);margin-top:3px}
+.content{display:none;flex-direction:column;gap:16px}.content.active{display:flex}
+.back{align-self:flex-start;color:var(--blue);text-decoration:none;font-size:13px;padding:2px 0}
+.panel{padding:20px;border-radius:22px;min-width:0}
+.panel h2{font-size:18px;margin:0 0 4px}
+.sub{font-size:13px;color:var(--muted);margin:0 0 14px}
+ol.rank,ul.plain{list-style:none;margin:0;padding:0}
+ol.rank{counter-reset:n}
+.resource{display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid var(--edge);flex-wrap:wrap}
+ol.rank .resource{counter-increment:n}
+ol.rank .resource::before{content:counter(n,persian);color:var(--muted);font-weight:700;min-width:1.3em}
+.resource .txt{flex:1 1 220px;min-width:0}
+.resource strong{font-size:14px;display:block}
+.resource small{display:block;font-size:12.5px;color:var(--muted)}
+.link{font-size:12.5px;text-decoration:none;color:var(--blue);padding:7px 12px;border:1px solid var(--edge);border-radius:12px;background:var(--glass2);white-space:nowrap}
+.note{margin-top:14px;padding:12px 14px;border-radius:15px;background:var(--wash);font-size:13px;color:var(--muted)}
+.warn{background:var(--warn-bg);color:var(--warn-fg)}
+.how{display:flex;flex-direction:column}
+.how .resource{align-items:flex-start;flex-direction:column;gap:4px}
+.how ul{margin:0;padding-inline-start:20px;font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:3px}
+bdi.en{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;overflow-wrap:anywhere;user-select:all}
+.how a{color:var(--blue)}
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:28px}
+@media (max-width:650px){.tiles{grid-template-columns:repeat(2,1fr)}.hero{padding:26px 14px}.tile{min-height:125px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head><body>
+
+<div class="wrap"><header><div class="brand"><div class="mark" aria-hidden="true">ر</div><div><div class="name">Raha <span>رها</span></div><div class="tag">همراه آفلاین شما</div></div></div><button class="round" id="theme" type="button" aria-label="تغییر حالت روشن و تاریک"><svg id="ico-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.500A8 8 0 0 1 9.500 4a8 8 0 1 0 10.500 10.500z"/></svg><svg id="ico-sun" viewBox="0 0 24 24" aria-hidden="true" hidden><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.900 4.900l1.400 1.400M17.700 17.700l1.400 1.400M4.900 19.100l1.400-1.400M17.700 6.300l1.400-1.400"/></svg></button></header>
+<main>
+<section id="home"><div class="hero glass"><h1>آماده باشید، حتی بدون اینترنت</h1><p>ابزارها و منابع ضروری را پیش از اختلال آماده کنید.</p><div class="pill">بدون حساب کاربری · بدون ردیابی</div></div>
+<div class="heading">دسترسی سریع <small>چهار بخش اصلی</small></div>
+<div class="tiles">
+<a class="tile glass" href="#tools"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.500 5.600 12 3z"/></svg></span><b>ابزارهای اینترنت</b><small>رتبه‌بندی و دانلود</small></a>
+<a class="tile glass" href="#resources"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v17H6a2 2 0 0 0-2 2z"/><path d="M4 20V5M9 8h6"/></svg></span><b>منابع و آموزش‌ها</b><small>راهنماهای آفلاین</small></a>
+<a class="tile glass" href="#maps"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.100 7-11a7 7 0 1 0-14 0c0 4.900 7 11 7 11z"/><circle cx="12" cy="10" r="2.500"/></svg></span><b>نقشه‌های آفلاین</b><small>آماده‌سازی نقشه</small></a>
+<a class="tile glass" href="#prepare"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.500 6 1.200 1.200L7 5M3.500 12l1.200 1.200L7 11M3.500 18l1.200 1.200L7 17"/></svg></span><b>راهنمای آمادگی</b><small>کارهای ضروری</small></a>
+</div></section>
+
+<section class="content" id="tools"><a class="back" href="#">← بازگشت</a>
+<div class="panel glass"><h2>ابزارهای اینترنت</h2><p class="sub">شش برنامه‌ی رایگان به ترتیبی که برای ایران پیشنهاد می‌شود. از اولی شروع کن و اگر وصل نشد سراغ بعدی برو.</p>
+<ol class="rank">
+<li class="resource"><div class="txt"><strong>Proton VPN (رایگان)</strong><small>حالت Stealth ترافیک را شبیه وب‌گردی معمولی می‌کند. گاهی قطع می‌شود.</small></div><a class="link" href="https://protonvpn.com" target="_blank" rel="noopener">سایت رسمی ↗</a></li>
+<li class="resource"><div class="txt"><strong>Psiphon</strong><small>آدرس سرورهایش مدام عوض می‌شود و معمولاً زود دوباره وصل می‌شود.</small></div><a class="link" href="https://psiphon.ca" target="_blank" rel="noopener">سایت رسمی ↗</a></li>
+<li class="resource"><div class="txt"><strong>Tor با Snowflake</strong><small>برای خواندن متن و سایت‌ها جواب می‌دهد ولی کند است.</small></div><a class="link" href="https://www.torproject.org/download/" target="_blank" rel="noopener">سایت رسمی ↗</a></li>
+<li class="resource"><div class="txt"><strong>Amnezia Free</strong><small>رایگان و ضدمسدودسازی، ولی سرعت حدود ۸ مگابیت است و یوتیوب ندارد. کارکردش در ایران را نتوانستم تأیید کنم.</small></div><a class="link" href="https://amnezia.org/downloads" target="_blank" rel="noopener">سایت رسمی ↗</a></li>
+<li class="resource"><div class="txt"><strong>Windscribe (رایگان)</strong><small>ماهی ۱۰ گیگابایت با ایمیل تأییدشده. منابع من درباره‌ی ایران چیزی نگفتند.</small></div><a class="link" href="https://windscribe.com" target="_blank" rel="noopener">سایت رسمی ↗</a></li>
+<li class="resource"><div class="txt"><strong>Cloudflare WARP</strong><small>منابع چیزی درباره‌اش نگفتند و در ایران همیشه کار نمی‌کند.</small></div><a class="link" href="https://one.one.one.one" target="_blank" rel="noopener">سایت رسمی ↗</a></li>
+</ol>
+<div class="note warn">این ترتیب از روی گزارش سایت‌های خبری و راهنما است و آزمایش نشده. وضعیت فیلترینگ هفته به هفته و روی هر اپراتور فرق می‌کند.</div></div>
+
+<div class="panel glass"><h2>اگر سایت رسمی باز نشد</h2><p class="sub">راه‌های دانلود غیرمستقیم که پیدا کردم.</p>
+<div class="how">
+<div class="resource"><strong>Tor</strong><ul>
+<li>آینه‌های رسمی: <bdi class="en" dir="ltr">tor.eff.org</bdi> یا <bdi class="en" dir="ltr">lacebolla.net</bdi></li>
+<li>ربات تلگرام: <a href="https://t.me/gettor_bot" target="_blank" rel="noopener"><bdi class="en" dir="ltr">@GetTor_Bot</bdi></a> (بزن start، زبان و سیستم‌عامل را انتخاب کن)</li>
+<li>ایمیل: به <bdi class="en" dir="ltr">gettor@torproject.org</bdi> ایمیل بزن و در متن فقط یکی را بنویس: <bdi class="en" dir="ltr">android</bdi> ، <bdi class="en" dir="ltr">windows</bdi> ، <bdi class="en" dir="ltr">osx</bdi> یا <bdi class="en" dir="ltr">linux</bdi></li>
+<li>پاسخ GetTor امضا و اثر انگشت کلید را هم می‌فرستد تا درستی فایل را بسنجی.</li></ul></div>
+<div class="resource"><strong>Amnezia</strong><ul><li>سایت رسمی‌شان این آینه را معرفی می‌کند: <bdi class="en" dir="ltr">storage.googleapis.com/amnezia/amnezia.org</bdi></li></ul></div>
+<div class="resource"><strong>Proton VPN، Psiphon، Windscribe و WARP</strong><ul><li>آدرس جایگزین رسمی پیدا نکردم. اگر Google Play یا App Store برایت کار می‌کند، از همان نصب کن.</li></ul></div>
+<div class="resource"><strong>فایل از دوست یا کانال</strong><ul><li>ممکن است دست‌کاری شده باشد و خطرش از خود فیلترینگ بیشتر است.</li><li>ترجیحاً از کسی بگیر که خودش آن را از فروشگاه یا سایت رسمی دانلود کرده.</li><li>اجازه‌ی «نصب از منبع ناشناس» را فقط برای همان لحظه روشن کن.</li></ul></div>
+</div>
+<div class="note">اگر برنامه‌ای خواست گواهی (Certificate) نصب کنی، رد کن. برای بانک و ایمیل اصلی از وی‌پی‌ان ناشناس استفاده نکن. وی‌پی‌ان اینترنت ایجاد نمی‌کند و در قطع کامل مسیرهای ارتباطی اتصال برقرار نخواهد کرد.</div></div>
+</section>
+
+<section class="content" id="resources"><a class="back" href="#">← بازگشت</a><div class="panel glass"><h2>منابع و آموزش‌ها</h2><p class="sub">این بخش در نسخه‌های بعدی با محتوای آفلاین تکمیل می‌شود.</p><div class="note">راهنماهای کمک‌های اولیه عمومی، امنیت دیجیتال و مدیریت ارتباطات به‌صورت همراه برنامه ارائه خواهند شد.</div></div></section>
+<section class="content" id="maps"><a class="back" href="#">← بازگشت</a><div class="panel glass"><h2>نقشه‌های آفلاین</h2><p class="sub">نقشه‌های موردنیاز را پیش از قطعی اینترنت دریافت کنید.</p><div class="note">این نسخه هنوز نقشه داخلی ندارد؛ راهنمای ذخیره نقشه‌ها در نسخه بعدی اضافه می‌شود.</div></div></section>
+<section class="content" id="prepare"><a class="back" href="#">← بازگشت</a><div class="panel glass"><h2>راهنمای آمادگی</h2><p class="sub">چند کار ساده برای آمادگی پیش از اختلال.</p>
+<ul class="plain"><li class="resource"><div class="txt"><strong>اطلاعات ضروری</strong><small>شماره‌های تماس و نشانی‌های مهم را آفلاین در دسترس داشته باشید.</small></div></li>
+<li class="resource"><div class="txt"><strong>محتوای آفلاین</strong><small>نقشه‌ها، راهنماها و اسناد ضروری را از قبل دریافت کنید.</small></div></li>
+<li class="resource"><div class="txt"><strong>هماهنگی خانوادگی</strong><small>راه ارتباطی جایگزین و محل ملاقات را از قبل مشخص کنید.</small></div></li>
+<li class="resource"><div class="txt"><strong>آمادگی دستگاه</strong><small>شارژر، پاوربانک و نسخه پشتیبان را آماده نگه دارید.</small></div></li></ul></div></section>
+</main>
+<footer>Raha 0.2 · هیچ اطلاعات شخصی جمع‌آوری یا ارسال نمی‌شود.</footer></div>
+<script>
+(function(){
+var home=document.getElementById('home'),views=['tools','resources','maps','prepare'];
+function route(){var id=location.hash.slice(1),ok=views.indexOf(id)>-1;home.hidden=ok;
+  document.querySelectorAll('.content').forEach(function(x){x.classList.toggle('active',ok&&x.id===id)});window.scrollTo(0,0)}
+addEventListener('hashchange',route);route();
+var btn=document.getElementById('theme'),root=document.documentElement;
+function dark(){var t=root.getAttribute('data-theme');return t?t==='dark':matchMedia('(prefers-color-scheme: dark)').matches}
+var moon=document.getElementById('ico-moon'),sun=document.getElementById('ico-sun');
+function icon(){var d=dark();moon.toggleAttribute('hidden',d);sun.toggleAttribute('hidden',!d)}
+btn.addEventListener('click',function(){root.setAttribute('data-theme',dark()?'light':'dark');icon()});icon();
+})();
+</script>
+<script>if("serviceWorker" in navigator&&location.protocol!=="file:")addEventListener("load",function(){navigator.serviceWorker.register("./service-worker.js").catch(function(){})});</script>
+</body></html>
