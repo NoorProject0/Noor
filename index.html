@@ -1,148 +1,424 @@
-<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f4f7fb"><meta name="description" content="رها؛ همراه آفلاین شما"><link rel="manifest" href="./manifest.json"><link rel="icon" href="./icons/raha.svg"><link rel="apple-touch-icon" href="./icons/raha-192.png">
-<title>Raha | رها</title>
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#eef3fa"><meta name="description" content="نور؛ همراه آفلاین شما"><link rel="manifest" href="./manifest.json"><link rel="icon" href="./icons/nour.svg"><link rel="apple-touch-icon" href="./icons/nour-192.png">
+<title>Nour | نور</title>
 <style>
-/* Layout: glass cards on a soft blue wash. Home = four tiles; each tile opens one panel via the URL hash, so the Back button works. */
+/* Layout: floating glass cards over soft colour orbs. Home = four tiles. Every topic is its own page, chosen by the URL hash, with a glass dock at the bottom for the five main areas. */
 :root{
-  --bg:#f4f7fb;--glass:rgba(255,255,255,.62);--glass2:rgba(255,255,255,.84);--line:rgba(255,255,255,.95);--edge:rgba(80,110,145,.18);
-  --ink:#263346;--muted:#5d6b7d;--blue:#3d6794;--wash:rgba(134,174,215,.16);--shadow:0 18px 50px rgba(65,92,125,.10);
-  --g1:#dceafa;--g2:#e5edf7;--g3:#fafcff;--g4:#edf3fa;--warn-bg:#fef3c7;--warn-fg:#7a4b00;
+  --bg:#eef3fa;--glass-a:rgba(255,255,255,.72);--glass-b:rgba(255,255,255,.42);--line:rgba(255,255,255,.9);--edge:rgba(70,100,140,.16);
+  --hl:rgba(255,255,255,.9);--hl2:rgba(120,150,190,.12);--ink:#1f2d40;--muted:#586779;--blue:#2f5f94;--wash:rgba(110,160,215,.16);
+  --shadow:0 20px 50px rgba(60,90,130,.14);
+  --orb1:rgba(120,170,235,.55);--orb2:rgba(170,150,240,.40);--orb3:rgba(110,210,200,.38);
+  --warn-bg:rgba(254,243,199,.85);--warn-fg:#6e4300;--danger-bg:rgba(254,226,226,.88);--danger-fg:#8a1c1c;--ok:#176a3a;
   --font:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#111b29;--glass:rgba(28,43,62,.55);--glass2:rgba(28,43,62,.8);--line:rgba(255,255,255,.13);--edge:rgba(255,255,255,.12);
-  --ink:#edf3fa;--muted:#a9b6c6;--blue:#b2cce8;--wash:rgba(140,181,222,.13);--shadow:0 18px 50px rgba(0,0,0,.25);
-  --g1:#253d58;--g2:#16243a;--g3:#111b29;--g4:#111b29;--warn-bg:#3a2c0b;--warn-fg:#f5cf7a;color-scheme:dark}}
+  --bg:#0d1624;--glass-a:rgba(40,58,84,.62);--glass-b:rgba(24,38,58,.38);--line:rgba(255,255,255,.14);--edge:rgba(255,255,255,.12);
+  --hl:rgba(255,255,255,.16);--hl2:rgba(0,0,0,.25);--ink:#edf3fa;--muted:#a9b6c6;--blue:#a9c9ee;--wash:rgba(130,175,225,.15);
+  --shadow:0 20px 50px rgba(0,0,0,.35);--orb1:rgba(60,110,190,.55);--orb2:rgba(100,80,180,.42);--orb3:rgba(40,140,140,.38);
+  --warn-bg:rgba(70,52,10,.75);--warn-fg:#f5cf7a;--danger-bg:rgba(90,26,26,.75);--danger-fg:#ffb4b4;--ok:#6ee7a0;color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#111b29;--glass:rgba(28,43,62,.55);--glass2:rgba(28,43,62,.8);--line:rgba(255,255,255,.13);--edge:rgba(255,255,255,.12);
-  --ink:#edf3fa;--muted:#a9b6c6;--blue:#b2cce8;--wash:rgba(140,181,222,.13);--shadow:0 18px 50px rgba(0,0,0,.25);
-  --g1:#253d58;--g2:#16243a;--g3:#111b29;--g4:#111b29;--warn-bg:#3a2c0b;--warn-fg:#f5cf7a;color-scheme:dark}
+  --bg:#0d1624;--glass-a:rgba(40,58,84,.62);--glass-b:rgba(24,38,58,.38);--line:rgba(255,255,255,.14);--edge:rgba(255,255,255,.12);
+  --hl:rgba(255,255,255,.16);--hl2:rgba(0,0,0,.25);--ink:#edf3fa;--muted:#a9b6c6;--blue:#a9c9ee;--wash:rgba(130,175,225,.15);
+  --shadow:0 20px 50px rgba(0,0,0,.35);--orb1:rgba(60,110,190,.55);--orb2:rgba(100,80,180,.42);--orb3:rgba(40,140,140,.38);
+  --warn-bg:rgba(70,52,10,.75);--warn-fg:#f5cf7a;--danger-bg:rgba(90,26,26,.75);--danger-fg:#ffb4b4;--ok:#6ee7a0;color-scheme:dark}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-body{margin:0;min-height:100vh;color:var(--ink);font-family:var(--font);line-height:1.75;background-color:var(--bg);
-  background-image:radial-gradient(ellipse at 12% 8%,var(--g1) 0,transparent 38%),radial-gradient(ellipse at 90% 30%,var(--g2) 0,transparent 35%),linear-gradient(135deg,var(--g3),var(--g4));
-  background-attachment:fixed;padding-block:26px;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.9;background-color:var(--bg);
+  padding-block:22px 130px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.orbs{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.orb{position:absolute;border-radius:50%;filter:blur(70px);animation:drift 36s ease-in-out infinite alternate}
+.orb.a{width:480px;height:480px;background:var(--orb1);top:-120px;right:-100px}
+.orb.b{width:420px;height:420px;background:var(--orb2);top:38%;left:-140px;animation-duration:44s}
+.orb.c{width:380px;height:380px;background:var(--orb3);bottom:-120px;right:12%;animation-duration:52s}
+@keyframes drift{to{transform:translate3d(40px,60px,0) scale(1.12)}}
 button,a{font:inherit}button{cursor:pointer}
-a:focus-visible,button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
-.wrap{max-width:900px;margin:0 auto}
-.glass{background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(25px) saturate(155%);-webkit-backdrop-filter:blur(25px) saturate(155%);box-shadow:var(--shadow)}
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:34px;gap:12px}
-.brand{display:flex;gap:11px;align-items:center}
-.mark{width:42px;height:42px;border-radius:15px;display:grid;place-items:center;background:var(--glass2);border:1px solid var(--line);color:var(--blue);font-size:20px}
-.name{font-size:21px;font-weight:650;line-height:1.4}.name span{font-weight:400;color:var(--muted)}
-.tag{font-size:12px;color:var(--muted)}
-.round{width:40px;height:40px;padding:0;border-radius:14px;border:1px solid var(--line);background:var(--glass2);color:var(--ink);display:grid;place-items:center}
-.round svg{width:20px;height:20px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.hero{text-align:center;border-radius:27px;padding:32px 16px 27px;margin-bottom:25px}
-.hero h1{font-size:clamp(24px,4vw,34px);font-weight:560;margin:0 0 7px;line-height:1.5;text-wrap:balance}
-.hero p{font-size:14px;color:var(--muted);margin:0}
-.pill{display:inline-block;margin-top:17px;padding:5px 13px;border-radius:30px;border:1px solid var(--line);background:var(--glass2);font-size:12px;color:var(--muted)}
-.heading{display:flex;justify-content:space-between;margin:22px 4px 12px;font-size:14px;font-weight:650}
-.heading small{font-weight:400;color:var(--muted);font-size:12px}
-.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
-.tile{border-radius:21px;min-height:137px;padding:18px 15px;text-align:right;color:var(--ink);text-decoration:none;display:flex;flex-direction:column;align-items:flex-start;transition:transform .15s}
-.tile:hover{transform:translateY(-2px)}
-.tile .ico{width:37px;height:37px;border-radius:13px;background:var(--wash);display:grid;place-items:center;color:var(--blue);margin-bottom:12px}
-.tile .ico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.tile b{font-size:14px}.tile small{font-size:12px;color:var(--muted);margin-top:3px}
-.content{display:none;flex-direction:column;gap:16px}.content.active{display:flex}
-.back{align-self:flex-start;color:var(--blue);text-decoration:none;font-size:13px;padding:2px 0}
-.panel{padding:20px;border-radius:22px;min-width:0}
-.panel h2{font-size:18px;margin:0 0 4px}
-.sub{font-size:13px;color:var(--muted);margin:0 0 14px}
-ol.rank,ul.plain{list-style:none;margin:0;padding:0}
-ol.rank{counter-reset:n}
-.resource{display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid var(--edge);flex-wrap:wrap}
-ol.rank .resource{counter-increment:n}
-ol.rank .resource::before{content:counter(n,persian);color:var(--muted);font-weight:700;min-width:1.3em}
-.resource .txt{flex:1 1 220px;min-width:0}
-.resource strong{font-size:14px;display:block}
-.resource small{display:block;font-size:12.5px;color:var(--muted)}
-.link{font-size:12.5px;text-decoration:none;color:var(--blue);padding:7px 12px;border:1px solid var(--edge);border-radius:12px;background:var(--glass2);white-space:nowrap}
-.note{margin-top:14px;padding:12px 14px;border-radius:15px;background:var(--wash);font-size:13px;color:var(--muted)}
-.warn{background:var(--warn-bg);color:var(--warn-fg)}
-.how{display:flex;flex-direction:column}
-.how .resource{align-items:flex-start;flex-direction:column;gap:4px}
-.how ul{margin:0;padding-inline-start:20px;font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:3px}
-bdi.en{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;overflow-wrap:anywhere;user-select:all}
-.how a{color:var(--blue)}
-footer{text-align:center;color:var(--muted);font-size:12px;margin-top:28px}
-@media (max-width:650px){.tiles{grid-template-columns:repeat(2,1fr)}.hero{padding:26px 14px}.tile{min-height:125px}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.wrap{max-width:820px;margin:0 auto}
+.glass{background:linear-gradient(145deg,var(--glass-a),var(--glass-b));border:1px solid var(--line);
+  backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);
+  box-shadow:var(--shadow),inset 0 1px 0 var(--hl),inset 0 -1px 0 var(--hl2)}
+header.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px;gap:12px}
+.brand{display:flex;gap:12px;align-items:center}
+.mark{width:46px;height:46px;border-radius:16px;display:grid;place-items:center;color:var(--blue)}
+.mark svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round}
+.name{font-size:22px;font-weight:700;line-height:1.3}.name span{font-weight:400;color:var(--muted);font-size:17px}
+.tag{font-size:12.5px;color:var(--muted);line-height:1.4}
+.round{width:44px;height:44px;padding:0;border-radius:15px;color:var(--ink);display:grid;place-items:center}
+.round svg{width:21px;height:21px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.page{display:none;flex-direction:column;gap:16px}.page.on{display:flex}
+.hero{text-align:center;border-radius:30px;padding:34px 18px 28px}
+.hero h1{font-size:clamp(25px,4.4vw,36px);font-weight:600;margin:0 0 8px;line-height:1.5;text-wrap:balance}
+.hero p{font-size:15px;color:var(--muted);margin:0}
+.pill{display:inline-block;margin-top:16px;padding:5px 14px;border-radius:30px;font-size:12.5px;color:var(--muted)}
+.heading{margin:8px 4px 0;font-size:15px;font-weight:650}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.tile{border-radius:24px;min-height:150px;padding:18px 16px;color:var(--ink);text-decoration:none;display:flex;flex-direction:column;align-items:flex-start;transition:transform .18s,box-shadow .18s}
+.tile:hover{transform:translateY(-3px)}
+.ico{width:42px;height:42px;border-radius:15px;background:var(--wash);display:grid;place-items:center;color:var(--blue);margin-bottom:12px;flex:none;box-shadow:inset 0 1px 0 var(--hl)}
+.ico svg,.row svg.lead{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tile b{font-size:15px}.tile small{font-size:12.5px;color:var(--muted);margin-top:2px;line-height:1.6}
+.sos{border-radius:22px;padding:14px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.sos strong{font-size:14px}.sos .nums{display:flex;gap:10px;flex-wrap:wrap;margin-inline-start:auto}
+.sos a{color:var(--ink);text-decoration:none;padding:6px 14px;border-radius:14px;background:var(--wash);font-size:14px;white-space:nowrap}
+.back{align-self:flex-start;color:var(--blue);text-decoration:none;font-size:14px;padding:6px 4px;min-height:36px;display:inline-flex;align-items:center}
+.card{padding:20px;border-radius:26px;min-width:0;display:flex;flex-direction:column;gap:14px}
+.card h2{font-size:19px;margin:0;line-height:1.6}
+.card h3{font-size:16px;margin:4px 0 0;line-height:1.6}
+.sub{font-size:14.5px;color:var(--muted);margin:0}
+.card p{margin:0}
+.rows{display:flex;flex-direction:column;gap:10px}
+a.row{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:20px;color:var(--ink);text-decoration:none;transition:transform .15s}
+a.row:hover{transform:translateY(-2px)}
+.row .rk{flex:none;width:32px;height:32px;border-radius:50%;background:var(--wash);color:var(--blue);display:grid;place-items:center;font-weight:700;font-size:14px}
+.row .rt{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.7}
+.row .rt b{font-size:15.5px}.row .rt small{font-size:13.5px;color:var(--muted)}
+.row .chev{flex:none;width:18px;height:18px;fill:none;stroke:var(--muted);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.chip{display:inline-block;font-size:12.5px;padding:2px 10px;border-radius:20px;background:var(--wash);color:var(--blue);margin-inline-end:6px}
+.callout{padding:13px 15px;border-radius:18px;font-size:14.5px;background:var(--wash);color:var(--ink)}
+.callout.warn{background:var(--warn-bg);color:var(--warn-fg)}
+.callout.danger{background:var(--danger-bg);color:var(--danger-fg)}
+.callout b{font-weight:700}
+ol.steps{list-style:none;margin:0;padding:0;counter-reset:s;display:flex;flex-direction:column;gap:14px}
+ol.steps>li{counter-increment:s;position:relative;padding-inline-start:42px;min-height:30px}
+ol.steps>li::before{content:counter(s,persian);position:absolute;inset-inline-start:0;top:1px;width:30px;height:30px;border-radius:50%;background:var(--wash);color:var(--blue);display:grid;place-items:center;font-weight:700;font-size:14px;box-shadow:inset 0 1px 0 var(--hl)}
+ul.dots{margin:0;padding-inline-start:22px;display:flex;flex-direction:column;gap:8px}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+a.btn{padding:10px 18px;border-radius:16px;color:var(--ink);text-decoration:none;font-size:14.5px;font-weight:600;min-height:44px;display:inline-flex;align-items:center}
+a.btn.main{background:var(--blue);color:var(--bg);border-color:transparent}
+details.acc{border-radius:22px;overflow:hidden}
+details.acc summary{list-style:none;cursor:pointer;padding:15px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:650;font-size:15.5px;min-height:52px;line-height:1.6}
+details.acc summary::-webkit-details-marker{display:none}
+details.acc summary::after{content:"";flex:none;width:9px;height:9px;border-inline-end:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .2s}
+details.acc[open] summary::after{transform:rotate(-135deg)}
+.acc-body{padding:2px 18px 18px;display:flex;flex-direction:column;gap:12px}
+.chk{display:flex;align-items:flex-start;gap:12px;padding:12px 4px;border-top:1px solid var(--edge);cursor:pointer;font-size:15px;line-height:1.7}
+.chk:first-of-type{border-top:0}
+.chk input{flex:none;width:22px;height:22px;margin-top:3px;accent-color:var(--blue)}
+bdi{white-space:nowrap}
+bdi.en{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13.5px;overflow-wrap:anywhere;white-space:normal;user-select:all}
+.src{font-size:13px;color:var(--muted)}.src a{color:var(--blue)}
+footer.foot{text-align:center;color:var(--muted);font-size:12.5px;margin-top:26px;line-height:1.8}
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:20;pointer-events:none;
+  padding:0 max(12px,env(safe-area-inset-left,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-right,0px))}
+.dock nav{pointer-events:auto;max-width:540px;margin:0 auto;display:flex;gap:2px;border-radius:28px;padding:6px}
+.dock a{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:1px;padding:7px 2px 6px;border-radius:22px;color:var(--muted);font-size:12px;text-decoration:none;line-height:1.5;transition:background .15s}
+.dock a svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.dock a[aria-current="page"]{color:var(--blue);background:var(--wash);box-shadow:inset 0 1px 0 var(--hl)}
+@media (max-width:650px){.tiles{grid-template-columns:repeat(2,1fr)}.hero{padding:28px 14px 24px}.tile{min-height:136px}.card{padding:16px}.orb.a{width:340px;height:340px}.orb.b,.orb.c{width:300px;height:300px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head><body>
 
-<div class="wrap"><header><div class="brand"><div class="mark" aria-hidden="true">ر</div><div><div class="name">Raha <span>رها</span></div><div class="tag">همراه آفلاین شما</div></div></div><button class="round" id="theme" type="button" aria-label="تغییر حالت روشن و تاریک"><svg id="ico-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.500A8 8 0 0 1 9.500 4a8 8 0 1 0 10.500 10.500z"/></svg><svg id="ico-sun" viewBox="0 0 24 24" aria-hidden="true" hidden><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.900 4.900l1.400 1.400M17.700 17.700l1.400 1.400M4.900 19.100l1.400-1.400M17.700 6.300l1.400-1.400"/></svg></button></header>
+<div class="orbs" aria-hidden="true"><div class="orb a"></div><div class="orb b"></div><div class="orb c"></div></div>
+<div class="wrap">
+<header class="top"><div class="brand"><div class="mark glass" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.500" fill="currentColor"/><circle cx="12" cy="12" r="8" opacity=".55"/></svg></div><div><div class="name"><bdi dir="ltr">Nour</bdi> <span>نور</span></div><div class="tag">همراه آفلاین شما</div></div></div>
+<button class="round glass" id="theme" type="button" aria-label="تغییر حالت روشن و تاریک"><svg id="ico-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.500A8 8 0 0 1 9.500 4a8 8 0 1 0 10.500 10.500z"/></svg><svg id="ico-sun" viewBox="0 0 24 24" aria-hidden="true" hidden><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.900 4.900l1.400 1.400M17.700 17.700l1.400 1.400M4.900 19.100l1.400-1.400M17.700 6.300l1.400-1.400"/></svg></button></header>
 <main>
-<section id="home"><div class="hero glass"><h1>آماده باشید، حتی بدون اینترنت</h1><p>ابزارها و منابع ضروری را پیش از اختلال آماده کنید.</p><div class="pill">بدون حساب کاربری · بدون ردیابی</div></div>
-<div class="heading">دسترسی سریع <small>چهار بخش اصلی</small></div>
+
+<!-- HOME -->
+<section class="page on" id="p-home" data-tab="home">
+<div class="hero glass"><h1>آماده باشید، حتی بدون اینترنت</h1><p>ابزارها و آموزش‌های ضروری را پیش از اختلال آماده کنید.</p><div class="pill glass">بدون حساب کاربری · بدون ردیابی</div></div>
+<div class="heading">دسترسی سریع</div>
 <div class="tiles">
-<a class="tile glass" href="#tools"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.500 5.600 12 3z"/></svg></span><b>ابزارهای اینترنت</b><small>رتبه‌بندی و دانلود</small></a>
-<a class="tile glass" href="#resources"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v17H6a2 2 0 0 0-2 2z"/><path d="M4 20V5M9 8h6"/></svg></span><b>منابع و آموزش‌ها</b><small>راهنماهای آفلاین</small></a>
-<a class="tile glass" href="#maps"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.100 7-11a7 7 0 1 0-14 0c0 4.900 7 11 7 11z"/><circle cx="12" cy="10" r="2.500"/></svg></span><b>نقشه‌های آفلاین</b><small>آماده‌سازی نقشه</small></a>
-<a class="tile glass" href="#prepare"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.500 6 1.200 1.200L7 5M3.500 12l1.200 1.200L7 11M3.500 18l1.200 1.200L7 17"/></svg></span><b>راهنمای آمادگی</b><small>کارهای ضروری</small></a>
-</div></section>
-
-<section class="content" id="tools"><a class="back" href="#">← بازگشت</a>
-<div class="panel glass"><h2>ابزارهای اینترنت</h2><p class="sub">شش برنامه‌ی رایگان به ترتیبی که برای ایران پیشنهاد می‌شود. از اولی شروع کن و اگر وصل نشد سراغ بعدی برو.</p>
-<ol class="rank">
-<li class="resource"><div class="txt"><strong>Proton VPN (رایگان)</strong><small>حالت Stealth ترافیک را شبیه وب‌گردی معمولی می‌کند. گاهی قطع می‌شود.</small></div><a class="link" href="https://protonvpn.com" target="_blank" rel="noopener">سایت رسمی ↗</a></li>
-<li class="resource"><div class="txt"><strong>Psiphon</strong><small>آدرس سرورهایش مدام عوض می‌شود و معمولاً زود دوباره وصل می‌شود.</small></div><a class="link" href="https://psiphon.ca" target="_blank" rel="noopener">سایت رسمی ↗</a></li>
-<li class="resource"><div class="txt"><strong>Tor با Snowflake</strong><small>برای خواندن متن و سایت‌ها جواب می‌دهد ولی کند است.</small></div><a class="link" href="https://www.torproject.org/download/" target="_blank" rel="noopener">سایت رسمی ↗</a></li>
-<li class="resource"><div class="txt"><strong>Amnezia Free</strong><small>رایگان و ضدمسدودسازی، ولی سرعت حدود ۸ مگابیت است و یوتیوب ندارد. کارکردش در ایران را نتوانستم تأیید کنم.</small></div><a class="link" href="https://amnezia.org/downloads" target="_blank" rel="noopener">سایت رسمی ↗</a></li>
-<li class="resource"><div class="txt"><strong>Windscribe (رایگان)</strong><small>ماهی ۱۰ گیگابایت با ایمیل تأییدشده. منابع من درباره‌ی ایران چیزی نگفتند.</small></div><a class="link" href="https://windscribe.com" target="_blank" rel="noopener">سایت رسمی ↗</a></li>
-<li class="resource"><div class="txt"><strong>Cloudflare WARP</strong><small>منابع چیزی درباره‌اش نگفتند و در ایران همیشه کار نمی‌کند.</small></div><a class="link" href="https://one.one.one.one" target="_blank" rel="noopener">سایت رسمی ↗</a></li>
-</ol>
-<div class="note warn">این ترتیب از روی گزارش سایت‌های خبری و راهنما است و آزمایش نشده. وضعیت فیلترینگ هفته به هفته و روی هر اپراتور فرق می‌کند.</div></div>
-
-<div class="panel glass"><h2>اگر سایت رسمی باز نشد</h2><p class="sub">راه‌های دانلود غیرمستقیم که پیدا کردم.</p>
-<div class="how">
-<div class="resource"><strong>Tor</strong><ul>
-<li>آینه‌های رسمی: <bdi class="en" dir="ltr">tor.eff.org</bdi> یا <bdi class="en" dir="ltr">lacebolla.net</bdi></li>
-<li>ربات تلگرام: <a href="https://t.me/gettor_bot" target="_blank" rel="noopener"><bdi class="en" dir="ltr">@GetTor_Bot</bdi></a> (بزن start، زبان و سیستم‌عامل را انتخاب کن)</li>
-<li>ایمیل: به <bdi class="en" dir="ltr">gettor@torproject.org</bdi> ایمیل بزن و در متن فقط یکی را بنویس: <bdi class="en" dir="ltr">android</bdi> ، <bdi class="en" dir="ltr">windows</bdi> ، <bdi class="en" dir="ltr">osx</bdi> یا <bdi class="en" dir="ltr">linux</bdi></li>
-<li>پاسخ GetTor امضا و اثر انگشت کلید را هم می‌فرستد تا درستی فایل را بسنجی.</li></ul></div>
-<div class="resource"><strong>Amnezia</strong><ul><li>سایت رسمی‌شان این آینه را معرفی می‌کند: <bdi class="en" dir="ltr">storage.googleapis.com/amnezia/amnezia.org</bdi></li></ul></div>
-<div class="resource"><strong>Proton VPN، Psiphon، Windscribe و WARP</strong><ul><li>آدرس جایگزین رسمی پیدا نکردم. اگر Google Play یا App Store برایت کار می‌کند، از همان نصب کن.</li></ul></div>
-<div class="resource"><strong>فایل از دوست یا کانال</strong><ul><li>ممکن است دست‌کاری شده باشد و خطرش از خود فیلترینگ بیشتر است.</li><li>ترجیحاً از کسی بگیر که خودش آن را از فروشگاه یا سایت رسمی دانلود کرده.</li><li>اجازه‌ی «نصب از منبع ناشناس» را فقط برای همان لحظه روشن کن.</li></ul></div>
+<a class="tile glass" href="#tools"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.500 2.600 3.800 5.600 3.800 9s-1.300 6.400-3.800 9c-2.500-2.600-3.800-5.600-3.800-9S9.500 5.600 12 3z"/></svg></span><b>ابزارهای اینترنت</b><small>نصب قدم‌به‌قدم</small></a>
+<a class="tile glass" href="#resources"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v17H6a2 2 0 0 0-2 2z"/><path d="M4 20V5M9 8h6"/></svg></span><b>منابع و آموزش‌ها</b><small>کمک‌های اولیه، امنیت، ارتباط</small></a>
+<a class="tile glass" href="#maps"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.100 7-11a7 7 0 1 0-14 0c0 4.900 7 11 7 11z"/><circle cx="12" cy="10" r="2.500"/></svg></span><b>نقشه‌های آفلاین</b><small>نقشه‌ی ایران را دانلود کن</small></a>
+<a class="tile glass" href="#prepare"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.500 6 1.200 1.200L7 5M3.500 12l1.200 1.200L7 11M3.500 18l1.200 1.200L7 17"/></svg></span><b>راهنمای آمادگی</b><small>چک‌لیست قابل تیک‌زدن</small></a>
 </div>
-<div class="note">اگر برنامه‌ای خواست گواهی (Certificate) نصب کنی، رد کن. برای بانک و ایمیل اصلی از وی‌پی‌ان ناشناس استفاده نکن. وی‌پی‌ان اینترنت ایجاد نمی‌کند و در قطع کامل مسیرهای ارتباطی اتصال برقرار نخواهد کرد.</div></div>
+<div class="sos glass"><strong>شماره‌های اضطراری ایران</strong><div class="nums"><a href="tel:115">۱۱۵ اورژانس</a><a href="tel:110">۱۱۰ پلیس</a><a href="tel:125">۱۲۵ آتش‌نشانی</a></div></div>
 </section>
 
-<section class="content" id="resources"><a class="back" href="#">← بازگشت</a><div class="panel glass"><h2>منابع و آموزش‌ها</h2><p class="sub">این بخش در نسخه‌های بعدی با محتوای آفلاین تکمیل می‌شود.</p><div class="note">راهنماهای کمک‌های اولیه عمومی، امنیت دیجیتال و مدیریت ارتباطات به‌صورت همراه برنامه ارائه خواهند شد.</div></div></section>
-<section class="content" id="maps"><a class="back" href="#">← بازگشت</a>
-<div class="panel glass"><h2>نقشه‌های آفلاین</h2><p class="sub">نقشه باید پیش از قطعی و با اینترنت دانلود شود. این برنامه نقشه‌ی داخلی ندارد و فقط راه دانلود را نشان می‌دهد.</p>
-<ul class="plain">
-<li class="resource"><div class="txt"><strong>Organic Maps</strong><small>رایگان، متن‌باز و بدون ثبت‌نام. نقشه‌ها را کشور به کشور و منطقه به منطقه دانلود می‌کنی. از App Store، Google Play و F-Droid نصب می‌شود.</small></div><a class="link" href="https://organicmaps.app" target="_blank" rel="noopener">سایت رسمی ↗</a></li>
-<li class="resource"><div class="txt"><strong>CoMaps</strong><small>شاخه‌ای از Organic Maps. هنگام زوم کردن روی یک منطقه، دانلود نقشه‌اش را پیشنهاد می‌دهد. روی iPhone، Google Play و F-Droid هست.</small></div><a class="link" href="https://f-droid.org/fa/packages/app.comaps.fdroid/" target="_blank" rel="noopener">F-Droid ↗</a></li>
-<li class="resource"><div class="txt"><strong>Google Maps</strong><small>داخل برنامه، از عکس پروفایل وارد «نقشه‌های آفلاین» شو و منطقه را انتخاب کن. من نتوانستم بسنجم که دانلود آفلاینش برای ایران فعال است یا نه.</small></div></li>
-<li class="resource"><div class="txt"><strong>نشان و بلد آفلاین</strong><small>دو برنامه‌ی ایرانی که طبق عنوان مقاله‌ها نسخه‌ی آفلاین دارند. جزئیات و امنیتشان را نتوانستم بررسی کنم.</small></div><a class="link" href="https://cafebazaar.ir/app/ir.balad.offlinemaps" target="_blank" rel="noopener">بلد آفلاین ↗</a></li>
+<!-- TOOLS -->
+<section class="page" id="p-tools" data-tab="tools">
+<a class="back" href="#">→ بازگشت</a>
+<div class="card glass"><h2>ابزارهای اینترنت</h2>
+<p class="sub">وی‌پی‌ان برنامه‌ای است که اینترنت گوشی را از مسیر دیگری رد می‌کند تا سایت‌های بسته باز شوند. روی هر برنامه بزن تا مراحل نصب و اتصالش را ببینی.</p>
+<div class="callout warn"><b>مهم:</b> اگر اینترنت بین‌الملل کاملاً قطع شود، هیچ‌کدام از این برنامه‌ها کار نمی‌کنند. این ترتیب از گزارش‌های خبری و راهنماها گرفته شده، آزمایش نشده و فیلترینگ هر هفته عوض می‌شود. مراحل برای اندروید نوشته شده؛ روی <bdi dir="ltr">iPhone</bdi> مشابه است ولی ظاهر برنامه کمی فرق دارد.</div>
+<div class="rows">
+<a class="row glass" href="#app-psiphon"><span class="rk">۱</span><span class="rt"><b><bdi dir="ltr">Psiphon</bdi></b><small>بدون حساب کاربری. با ایمیل هم دانلود می‌شود.</small></span><svg class="chev" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></a>
+<a class="row glass" href="#app-proton"><span class="rk">۲</span><span class="rt"><b><bdi dir="ltr">Proton VPN</bdi></b><small>حالت <bdi dir="ltr">Stealth</bdi> برای عبور از فیلتر. حساب رایگان می‌خواهد.</small></span><svg class="chev" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></a>
+<a class="row glass" href="#app-tor"><span class="rk">۳</span><span class="rt"><b><bdi dir="ltr">Tor Browser</bdi></b><small>کند ولی مقاوم. فقط برای وب‌گردی.</small></span><svg class="chev" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></a>
+<a class="row glass" href="#app-windscribe"><span class="rk">۴</span><span class="rt"><b><bdi dir="ltr">Windscribe</bdi></b><small>ماهی ۱۰ گیگابایت با تأیید ایمیل.</small></span><svg class="chev" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></a>
+<a class="row glass" href="#app-warp"><span class="rk">۵</span><span class="rt"><b><bdi dir="ltr">Cloudflare WARP</bdi> (1.1.1.1)</b><small>ساده و رایگان. درباره‌ی کارکردش در ایران چیزی پیدا نکردم.</small></span><svg class="chev" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></a>
+<a class="row glass" href="#app-amnezia"><span class="rk">۶</span><span class="rt"><b><bdi dir="ltr">Amnezia Free</bdi></b><small>ممکن است برای ایران موجود نباشد.</small></span><svg class="chev" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></a>
+</div></div>
+<div class="card glass"><h2>چطور شروع کنم؟</h2>
+<ul class="dots"><li>از قبل دو یا سه برنامه نصب کن. وقتی یکی مسدود شد، دیگری آماده باشد.</li><li>از شماره‌ی ۱ شروع کن. اگر بعد از پنج دقیقه وصل نشد، سراغ بعدی برو.</li><li>فقط از سایت رسمی یا فروشگاه معتبر نصب کن.</li></ul>
+<a class="row glass" href="#download"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg></span><span class="rt"><b>اگر سایت رسمی باز نشد</b><small>راه‌های دانلود غیرمستقیم</small></span><svg class="chev" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></a>
+<div class="callout danger"><b>حواست باشد:</b> اگر برنامه‌ای خواست گواهی (<bdi dir="ltr">Certificate</bdi>) روی گوشی نصب کنی، رد کن. برای بانک و ایمیل اصلی از وی‌پی‌ان ناشناس استفاده نکن. وی‌پی‌ان تو را ناشناس نمی‌کند.</div></div>
+</section>
+
+<!-- APP: PSIPHON -->
+<section class="page" id="p-app-psiphon" data-tab="tools">
+<a class="back" href="#tools">→ ابزارهای اینترنت</a>
+<div class="card glass"><h2><bdi dir="ltr">Psiphon</bdi></h2><p><span class="chip">رایگان</span><span class="chip">بدون حساب</span></p>
+<p class="sub">برنامه‌ای برای دور زدن فیلترینگ. اگر یک روش اتصال مسدود شود، خودش روش دیگری را امتحان می‌کند.</p>
+<div class="callout">فقط یک <bdi dir="ltr">Psiphon</bdi> را همزمان نصب نگه دار. آیکون <b>رنگی</b> نسخه‌ی <bdi dir="ltr">Google Play</bdi> و آیکون <b>سفید</b> نسخه‌ی نصب دستی است. اندروید ۷ یا بالاتر لازم است.</div></div>
+<div class="card glass"><h3>نصب، راه اول: از <bdi dir="ltr">Google Play</bdi></h3>
+<ol class="steps"><li><bdi dir="ltr">Google Play</bdi> را باز کن.</li><li>در جستجو بنویس <bdi class="en" dir="ltr">Psiphon</bdi> و برنامه را نصب کن.</li></ol>
+<h3>نصب، راه دوم: با ایمیل (اگر سایت و فروشگاه باز نمی‌شود)</h3>
+<ol class="steps">
+<li>یک ایمیل خالی بفرست به <bdi class="en" dir="ltr">get@psiphon3.com</bdi>. نیازی به نوشتن متن نیست.</li>
+<li>جواب می‌آید و یک فایل پیوست دارد به نام <bdi class="en" dir="ltr">PsiphonAndroid.ap_</bdi>. اگر ندیدی پوشه‌ی اسپم را هم نگاه کن. بعضی سرویس‌های ایمیل فایل اجرایی را مسدود می‌کنند.</li>
+<li>فایل را دانلود کن و اسمش را عوض کن: آخرش به‌جای <bdi class="en" dir="ltr">.ap_</bdi> بنویس <bdi class="en" dir="ltr">.apk</bdi>.</li>
+<li>فایل را باز کن. اندروید اجازه‌ی «نصب برنامه‌ی ناشناس» را می‌پرسد. برای همان مرورگر یا فایل‌منیجر اجازه بده. در گوشی‌های <bdi dir="ltr">Pixel</bdi> مسیرش <bdi class="en" dir="ltr">Settings › Apps › Special app access</bdi> و در <bdi dir="ltr">Samsung</bdi> مسیرش <bdi class="en" dir="ltr">Settings › Security and privacy</bdi> است.</li>
+<li>بعد از نصب، آن اجازه را دوباره خاموش کن.</li></ol></div>
+<div class="card glass"><h3>اتصال</h3>
+<ol class="steps"><li>برنامه را باز کن.</li><li>اگر اندروید درباره‌ی ساخت اتصال <bdi dir="ltr">VPN</bdi> سؤال کرد، <b><bdi dir="ltr">OK</bdi></b> بزن.</li><li>صبر کن تا وصل شود. روی شبکه‌های سخت ممکن است چند دقیقه طول بکشد.</li><li>در این مدت دکمه‌ی شروع و توقف را مدام نزن، چون روند را از اول شروع می‌کند.</li></ol>
+<p class="sub">کشور: به‌طور پیش‌فرض بهترین سرور خودکار انتخاب می‌شود. اگر خواستی دستی انتخاب کنی، بیش از ۳۰ کشور در تنظیمات برنامه هست.</p></div>
+<div class="card glass"><h3>اگر وصل نشد</h3>
+<ul class="dots"><li>برنامه را به‌روز کن. نسخه‌ی قدیمی بیشتر مسدود می‌شود.</li><li>اگر بعد از به‌روزرسانی خطای <bdi class="en" dir="ltr">start_tunnel_failed</bdi> دیدی، گوشی را خاموش و روشن کن.</li><li>بین وای‌فای و اینترنت سیم‌کارت جابه‌جا شو. هر شبکه فرق دارد.</li><li>دستگاه‌هایی که به هات‌اسپات گوشی تو وصل‌اند، با <bdi dir="ltr">Psiphon</bdi> محافظت نمی‌شوند.</li></ul>
+<div class="callout"><b>اگر وصل بودن همیشگی می‌خواهی:</b> <bdi dir="ltr">Psiphon</bdi> قطع‌کن خودکار (<bdi dir="ltr">Kill switch</bdi>) ندارد. در تنظیمات اندروید، بخش <bdi dir="ltr">VPN</bdi>، گزینه‌های <bdi class="en" dir="ltr">Always-on VPN</bdi> و <bdi class="en" dir="ltr">Block connections without VPN</bdi> را روشن کن. اسم دقیق منو در هر گوشی فرق می‌کند.</div>
+<div class="btns"><a class="btn main glass" href="https://psiphon.ca" target="_blank" rel="noopener">سایت رسمی ↗</a></div></div>
+</section>
+
+<!-- APP: PROTON -->
+<section class="page" id="p-app-proton" data-tab="tools">
+<a class="back" href="#tools">→ ابزارهای اینترنت</a>
+<div class="card glass"><h2><bdi dir="ltr">Proton VPN</bdi></h2><p><span class="chip">پلن رایگان</span><span class="chip">حساب لازم است</span></p>
+<p class="sub">از یک شرکت سوئیسی. پلن رایگان طبق سایتشان محدودیت حجم و سرعت ندارد و تبلیغ ندارد. حالت <bdi dir="ltr">Stealth</bdi> ترافیک را شبیه وب‌گردی معمولی می‌کند و در پلن رایگان هم هست.</p>
+<div class="callout warn">ساخت حساب به اینترنت نیاز دارد. اگر ثبت‌نام باز نشد، سراغ برنامه‌ی بعدی برو.</div></div>
+<div class="card glass"><h3>نصب و ساخت حساب</h3>
+<ol class="steps"><li>از <bdi dir="ltr">Google Play</bdi> برنامه‌ی <bdi class="en" dir="ltr">Proton VPN</bdi> را نصب کن. یا از سایت رسمی <bdi class="en" dir="ltr">protonvpn.com</bdi> دانلودش کن.</li><li>برنامه را باز کن و گزینه‌ی ساخت حساب را بزن.</li><li>حساب رایگان بساز. نام کاربری و رمز لازم است. رمز را جایی یادداشت کن.</li><li>با همان نام کاربری و رمز وارد شو.</li></ol></div>
+<div class="card glass"><h3>روشن‌کردن حالت <bdi dir="ltr">Stealth</bdi> (مهم)</h3>
+<p class="sub">قبل از اولین اتصال این کار را بکن، چون برای عبور از فیلتر ساخته شده است.</p>
+<ol class="steps"><li>منوی ☰ را بزن.</li><li>وارد <b><bdi dir="ltr">Settings</bdi></b> شو.</li><li>روی <b><bdi dir="ltr">Advanced</bdi></b> بزن.</li><li>روی <b><bdi dir="ltr">Protocol</bdi></b> بزن و <b><bdi dir="ltr">Stealth</bdi></b> را انتخاب کن.</li></ol></div>
+<div class="card glass"><h3>اتصال</h3>
+<ol class="steps"><li>در صفحه‌ی اصلی دکمه‌ی اتصال سریع (<bdi dir="ltr">Quick Connect</bdi>) را بزن.</li><li>اگر اندروید درباره‌ی اتصال <bdi dir="ltr">VPN</bdi> پرسید، <b><bdi dir="ltr">OK</bdi></b> بزن.</li><li>وقتی وضعیت «<bdi dir="ltr">Connected</bdi>» شد، آماده است.</li></ol>
+<h3>اگر وصل نشد</h3>
+<ul class="dots"><li>برنامه را به‌روز کن.</li><li>اگر <bdi dir="ltr">Stealth</bdi> وصل نشد، پروتکل دیگری را در همان منو امتحان کن.</li><li>بین وای‌فای و اینترنت سیم‌کارت جابه‌جا شو.</li></ul>
+<div class="btns"><a class="btn main glass" href="https://protonvpn.com" target="_blank" rel="noopener">سایت رسمی ↗</a><a class="btn glass" href="https://protonvpn.com/blog/stealth-vpn-protocol" target="_blank" rel="noopener">درباره‌ی <bdi dir="ltr">Stealth</bdi> ↗</a></div>
+<p class="src">مسیر تنظیمات <bdi dir="ltr">Stealth</bdi> از مقاله‌ی رسمی <bdi dir="ltr">Proton</bdi> است. <bdi dir="ltr">iPhone</bdi>: <bdi dir="ltr">Settings</bdi> › <bdi dir="ltr">Security options</bdi> › <bdi dir="ltr">Protocol</bdi> › <bdi dir="ltr">Stealth.</bdi></p></div>
+</section>
+
+<!-- APP: TOR -->
+<section class="page" id="p-app-tor" data-tab="tools">
+<a class="back" href="#tools">→ ابزارهای اینترنت</a>
+<div class="card glass"><h2><bdi dir="ltr">Tor Browser</bdi></h2><p><span class="chip">رایگان</span><span class="chip">متن‌باز</span><span class="chip">کند</span></p>
+<p class="sub">مرورگری که ترافیکش را از چند مسیر رد می‌کند. فقط خود مرورگر محافظت می‌شود، نه بقیه‌ی برنامه‌های گوشی. برای خواندن خبر و جستجو خوب است، برای ویدیو نه.</p>
+<div class="callout warn"><bdi dir="ltr">Tor Browser</bdi> را فقط از <bdi dir="ltr">Google Play</bdi>، <bdi dir="ltr">F‑Droid</bdi> یا سایت رسمی <bdi dir="ltr">Tor</bdi> نصب کن. نصب از جاهای دیگر خیلی خطرناک است. اگر سایت رسمی باز نشد، به صفحه‌ی «اگر سایت رسمی باز نشد» برو.</div></div>
+<div class="card glass"><h3>اتصال ساده</h3>
+<ol class="steps"><li><bdi dir="ltr">Tor Browser</bdi> را نصب و باز کن.</li><li>دو گزینه می‌بینی: <b><bdi dir="ltr">Connect</bdi></b> و آیکون تنظیمات.</li><li><b><bdi dir="ltr">Connect</bdi></b> را بزن. در بیشتر موارد همین کافی است.</li><li>پیشرفت اتصال پایین صفحه نشان داده می‌شود.</li></ol></div>
+<div class="card glass"><h3>اگر شبکه‌ات <bdi dir="ltr">Tor</bdi> را مسدود کرده (با <bdi dir="ltr">Snowflake</bdi>)</h3>
+<ol class="steps"><li>در اولین باز کردن، به‌جای <bdi dir="ltr">Connect</bdi> روی <b>آیکون تنظیمات</b> بزن.</li><li>در صفحه‌ی اول <b><bdi dir="ltr">Config Bridge</bdi></b> را بزن.</li><li>گزینه‌ی <b><bdi dir="ltr">Use a Bridge</bdi></b> را روشن کن.</li><li>از بین <bdi class="en" dir="ltr">obfs4</bdi> و <bdi class="en" dir="ltr">meek-azure</bdi> و <bdi class="en" dir="ltr">snowflake</bdi>، گزینه‌ی <b><bdi dir="ltr">snowflake</bdi></b> را انتخاب کن.</li><li>روی <bdi dir="ltr">Connect</bdi> بزن و صبر کن.</li></ol></div>
+<div class="card glass"><h3>نکات امنیتی</h3>
+<ul class="dots"><li>سطح امنیت: منوی سه‌نقطه در نوار آدرس › <b><bdi dir="ltr">Security Settings</bdi></b> › یکی از <bdi dir="ltr">Standard</bdi>، <bdi dir="ltr">Safer</bdi>، <bdi dir="ltr">Safest.</bdi> سطح بالاتر امن‌تر است ولی بعضی قابلیت‌های سایت‌ها خاموش می‌شود.</li><li>در اندروید «<bdi dir="ltr">New Identity</bdi>» فقط مسیر <bdi dir="ltr">Tor</bdi> را عوض می‌کند و فعالیت‌های بعدی را از قبلی جدا نمی‌کند.</li><li>محدودیت‌ها: آپلود فایل و گرفتن اسکرین‌شات ممکن نیست.</li><li>برنامه را همیشه به‌روز نگه دار.</li></ul>
+<div class="btns"><a class="btn main glass" href="https://www.torproject.org/download/" target="_blank" rel="noopener">سایت رسمی ↗</a><a class="btn glass" href="#download">دانلود غیرمستقیم</a></div></div>
+</section>
+
+<!-- APP: WINDSCRIBE -->
+<section class="page" id="p-app-windscribe" data-tab="tools">
+<a class="back" href="#tools">→ ابزارهای اینترنت</a>
+<div class="card glass"><h2><bdi dir="ltr">Windscribe</bdi></h2><p><span class="chip">پلن رایگان</span><span class="chip">حساب لازم است</span></p>
+<p class="sub">سرویس تجاری با پلن رایگان: سرور در ۱۰ کشور و ماهی ۱۰ گیگابایت با ایمیل تأییدشده. بدون تأیید ایمیل فقط ۲ گیگابایت در ماه می‌دهد. درباره‌ی کارکردش در ایران چیزی پیدا نکردم.</p></div>
+<div class="card glass"><h3>نصب و ساخت حساب</h3>
+<ol class="steps"><li>از <bdi dir="ltr">Google Play</bdi> برنامه‌ی <bdi class="en" dir="ltr">Windscribe VPN</bdi> را نصب کن. اندروید ۷ یا بالاتر لازم است.</li><li>باز کن و <b><bdi dir="ltr">Sign Up</bdi></b> را بزن تا حساب رایگان بسازی. اگر قبلاً حساب داری، <b><bdi dir="ltr">Login</bdi></b> را بزن.</li><li>برای گرفتن ۱۰ گیگابایت، ایمیل ثبت‌نام را تأیید کن: ایمیلی از <bdi dir="ltr">Windscribe</bdi> می‌آید، رویش بزن و لینکش را باز کن.</li></ol>
+<p class="sub">اگر <bdi dir="ltr">Play Store</bdi> کار نمی‌کند، فایل نصب مستقیم را از صفحه‌ی <bdi class="en" dir="ltr">windscribe.com/install/mobile/android-direct-phone</bdi> بگیر. بعد از نصب، اجازه‌ی نصب برنامه‌ی ناشناس را خاموش کن.</p></div>
+<div class="card glass"><h3>اتصال</h3>
+<ol class="steps"><li>در صفحه‌ی اصلی، دکمه‌ی بزرگ اتصال را بزن تا به بهترین سرور وصل شود.</li><li>بار اول اندروید اجازه‌ی ساخت <bdi dir="ltr">VPN</bdi> را می‌پرسد. <b><bdi dir="ltr">OK</bdi></b> بزن.</li><li>برای انتخاب کشور، نوار موقعیت را بزن و کشور یا شهر را انتخاب کن.</li><li>برای قطع، دوباره دکمه‌ی اتصال را بزن.</li></ol>
+<div class="callout">رایگان‌ها فقط به موقعیت‌های رایگان وصل می‌شوند. موقعیت‌های پولی ستاره دارند.</div>
+<div class="btns"><a class="btn main glass" href="https://windscribe.com" target="_blank" rel="noopener">سایت رسمی ↗</a></div></div>
+</section>
+
+<!-- APP: WARP -->
+<section class="page" id="p-app-warp" data-tab="tools">
+<a class="back" href="#tools">→ ابزارهای اینترنت</a>
+<div class="card glass"><h2><bdi dir="ltr">Cloudflare WARP</bdi> (1.1.1.1)</h2><p><span class="chip">رایگان</span></p>
+<p class="sub">برنامه‌ی شرکت <bdi dir="ltr">Cloudflare.</bdi> ترافیک وب گوشی را خصوصی نگه می‌دارد. درباره‌ی اینکه در ایران برای دور زدن فیلترینگ کار می‌کند یا نه، منبع قابل‌اعتمادی پیدا نکردم. آن را امتحان کن و بعد از بقیه‌ی گزینه‌ها بگذار.</p></div>
+<div class="card glass"><h3>نصب و اتصال</h3>
+<ol class="steps"><li>از <bdi dir="ltr">Google Play</bdi> برنامه‌ی <bdi class="en" dir="ltr">1.1.1.1: Faster Internet</bdi> را نصب کن.</li><li>باز کن و شرایط استفاده را بپذیر.</li><li>دکمه‌ی <b><bdi dir="ltr">WARP</bdi></b> را بزن تا «<bdi dir="ltr">Connected</bdi>» شود.</li><li>وقتی اندروید خواست پروفایل <bdi dir="ltr">VPN</bdi> نصب شود، اجازه بده.</li></ol>
+<div class="callout">دو حالت دارد. حالت پیش‌فرض <bdi dir="ltr">WARP</bdi> است و همه‌ی ترافیک وب را خصوصی می‌کند. حالت «فقط <bdi dir="ltr">DNS</bdi>» فقط درخواست‌های <bdi dir="ltr">DNS</bdi> را رمزگذاری می‌کند. بین این دو را در تنظیمات برنامه عوض می‌کنی.</div>
+<div class="btns"><a class="btn main glass" href="https://one.one.one.one" target="_blank" rel="noopener">سایت رسمی ↗</a></div></div>
+</section>
+
+<!-- APP: AMNEZIA -->
+<section class="page" id="p-app-amnezia" data-tab="tools">
+<a class="back" href="#tools">→ ابزارهای اینترنت</a>
+<div class="card glass"><h2><bdi dir="ltr">Amnezia Free</bdi></h2><p><span class="chip">رایگان</span><span class="chip">ممکن است برای ایران نباشد</span></p>
+<p class="sub">نسخه‌ی رایگان <bdi dir="ltr">Amnezia.</bdi> طبق راهنمای رسمی، این سرویس برای هر منطقه نسخه‌ی جدایی دارد (مثلاً <bdi dir="ltr">Amnezia Free RU</bdi>) و فقط در کشورهایی است که پشتیبانی می‌شوند. من ندیدم که نسخه‌ای برای ایران باشد. اگر در برنامه گزینه‌ای برای ایران ندیدی، این را رد کن.</p>
+<div class="callout warn">سرعت تا حدود ۸ مگابیت بر ثانیه محدود است، کشور را نمی‌توانی انتخاب کنی و یوتیوب ندارد (سایت رسمی).</div></div>
+<div class="card glass"><h3>نصب و اتصال</h3>
+<ol class="steps"><li>برنامه‌ی <bdi dir="ltr">AmneziaVPN</bdi> را فقط از صفحه‌ی رسمی دانلود نصب کن.</li><li>اگر هیچ اتصالی نداری، «<bdi dir="ltr">Let</bdi>'<bdi dir="ltr">s get started</bdi>» را بزن، وگرنه علامت <b>+</b> را بزن.</li><li>گزینه‌ی <b><bdi dir="ltr">VPN by Amnezia</bdi></b> را انتخاب کن و صبر کن بارگذاری شود.</li><li>اگر نسخه‌ی <bdi dir="ltr">Amnezia Free</bdi> برای منطقه‌ات (ایران) نشان داده شد، آن را انتخاب کن و <b><bdi dir="ltr">Connect</bdi></b> را بزن. اگر نشان داده نشد، این برنامه برای تو کار نمی‌کند.</li><li>بعد از ساخت اتصال، از صفحه‌ی اصلی وصل شو. کلید یا حساب لازم نیست.</li></ol></div>
+<div class="card glass"><h3>اگر وصل نشد یا ترافیک نداشت</h3>
+<ol class="steps"><li>در صفحه‌ی اصلی روی اتصال <bdi dir="ltr">Amnezia Free</bdi> و بعد آیکون چرخ‌دنده بزن.</li><li><b><bdi dir="ltr">Reload API config</bdi></b> و بعد <b><bdi dir="ltr">Continue</bdi></b> را بزن و دوباره امتحان کن.</li><li>اگر باز نشد، اتصال را پاک کن و دوباره از «<bdi dir="ltr">VPN by Amnezia</bdi>» بساز.</li></ol>
+<div class="btns"><a class="btn main glass" href="https://amnezia.org/downloads" target="_blank" rel="noopener">دانلود رسمی ↗</a></div></div>
+</section>
+
+<!-- DOWNLOAD -->
+<section class="page" id="p-download" data-tab="tools">
+<a class="back" href="#tools">→ ابزارهای اینترنت</a>
+<div class="card glass"><h2>اگر سایت رسمی باز نشد</h2><p class="sub">راه‌های غیرمستقیمی که برای دانلود از منبع رسمی پیدا کردم.</p></div>
+<details class="acc glass" open><summary><bdi dir="ltr">Tor Browser</bdi></summary><div class="acc-body">
+<p><b>آینه‌های رسمی:</b> <bdi class="en" dir="ltr">tor.eff.org</bdi> یا <bdi class="en" dir="ltr">lacebolla.net</bdi></p>
+<p><b>ربات تلگرام:</b> <a href="https://t.me/gettor_bot" target="_blank" rel="noopener"><bdi class="en" dir="ltr">@GetTor_Bot</bdi></a></p>
+<ol class="steps"><li>ربات را باز کن و <bdi class="en" dir="ltr">/start</bdi> بزن.</li><li>زبان را انتخاب کن.</li><li>گزینه‌ی «<bdi dir="ltr">Send me Tor Browser</bdi>» و بعد سیستم‌عامل (<bdi dir="ltr">Android</bdi>) را بزن.</li></ol>
+<p><b>ایمیل:</b> به <bdi class="en" dir="ltr">gettor@torproject.org</bdi> ایمیل بزن و در متن فقط یک کلمه بنویس: <bdi class="en" dir="ltr">android</bdi> (یا <bdi class="en" dir="ltr">windows</bdi>، <bdi class="en" dir="ltr">osx</bdi>، <bdi class="en" dir="ltr">linux</bdi>). ممکن است ۳۲ یا ۶۴ بیتی را بپرسد.</p>
+<p class="sub">جواب <bdi dir="ltr">GetTor</bdi> همراه فایل، امضا و اثر انگشت کلید را هم می‌فرستد تا بتوانی درستی فایل را بسنجی.</p></div></details>
+<details class="acc glass"><summary><bdi dir="ltr">Psiphon</bdi></summary><div class="acc-body"><p>یک ایمیل خالی به <bdi class="en" dir="ltr">get@psiphon3.com</bdi> بفرست. جواب، فایل نصب را پیوست دارد. مراحل کامل در صفحه‌ی <bdi dir="ltr">Psiphon</bdi> هست.</p><div class="btns"><a class="btn glass" href="#app-psiphon">مراحل <bdi dir="ltr">Psiphon</bdi></a></div></div></details>
+<details class="acc glass"><summary><bdi dir="ltr">Amnezia</bdi></summary><div class="acc-body"><p>سایت رسمی‌شان این لینک آینه را برای کسانی که به سایت دسترسی ندارند معرفی کرده است: <bdi class="en" dir="ltr">storage.googleapis.com/amnezia/amnezia.org</bdi></p></div></details>
+<details class="acc glass"><summary><bdi dir="ltr">Proton VPN</bdi>، <bdi dir="ltr">Windscribe</bdi> و <bdi dir="ltr">WARP</bdi></summary><div class="acc-body"><p>برای این‌ها آدرس جایگزین رسمی پیدا نکردم. اگر <bdi dir="ltr">Google Play</bdi> یا <bdi dir="ltr">App Store</bdi> برایت کار می‌کند، از همان نصب کن.</p></div></details>
+<div class="card glass"><h3>اگر فایل را از دوست یا کانال گرفتی</h3>
+<ul class="dots"><li>فایل ممکن است دست‌کاری شده باشد و خطرش از خود فیلترینگ بیشتر است.</li><li>ترجیحاً از کسی بگیر که خودش آن را از فروشگاه یا سایت رسمی دانلود کرده.</li><li>برای نصب فایل <bdi class="en" dir="ltr">.apk</bdi>، اندروید اجازه‌ی «نصب برنامه‌ی ناشناس» را می‌پرسد. فقط برای همان لحظه روشن کن و بعد خاموش کن.</li></ul></div>
+</section>
+
+<!-- RESOURCES -->
+<section class="page" id="p-resources" data-tab="resources">
+<a class="back" href="#">→ بازگشت</a>
+<div class="card glass"><h2>منابع و آموزش‌ها</h2><p class="sub">این راهنماها داخل خود برنامه است و بدون اینترنت هم باز می‌شود (بعد از اینکه یک بار آنلاین بازش کردی).</p>
+<div class="rows">
+<a class="row glass" href="#aid"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="rt"><b>کمک‌های اولیه</b><small>احیا، خفگی، خونریزی، سوختگی و بیشتر</small></span><svg class="chev" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></a>
+<a class="row glass" href="#security"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.500 3 8 7 10 4-2 7-5.500 7-10V6z"/></svg></span><span class="rt"><b>امنیت دیجیتال</b><small>رمز، تأیید دومرحله‌ای، فیشینگ، گوشی</small></span><svg class="chev" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></a>
+<a class="row glass" href="#comms"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg></span><span class="rt"><b>مدیریت ارتباطات</b><small>برنامه‌ی خانواده و پیام‌رسانی بدون اینترنت</small></span><svg class="chev" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></a>
+</div></div></section>
+
+<!-- FIRST AID -->
+<section class="page" id="p-aid" data-tab="resources">
+<a class="back" href="#resources">→ منابع و آموزش‌ها</a>
+<div class="card glass"><h2>کمک‌های اولیه</h2>
+<div class="callout danger"><b>اول از همه:</b> اگر جان کسی در خطر است، با <b>۱۱۵</b> (اورژانس) تماس بگیر یا از دیگران بخواه تماس بگیرند. ۱۱۵ فقط برای اورژانس پزشکی است. پلیس ۱۱۰ و آتش‌نشانی ۱۲۵.</div>
+<div class="callout warn">این راهنما از منابع بین‌المللی (صلیب سرخ، سرویس سلامت بریتانیا، سنت جان) گرفته شده و جای آموزش عملی را نمی‌گیرد. اگر می‌توانی، یک دوره‌ی عملی کمک‌های اولیه بگذران. پیش از هر کاری مطمئن شو که خودت در خطر نیستی.</div></div>
+<details class="acc glass"><summary>فرد بیهوش است و نفس نمی‌کشد (احیای قلبی ریوی)</summary><div class="acc-body">
+<ol class="steps"><li>مطمئن شو محیط برای تو امن است.</li><li>شانه‌ی فرد را تکان بده و بلند صدایش کن. حداکثر ۱۰ ثانیه ببین نفس می‌کشد یا نه. اگر پاسخ نمی‌دهد و نفس نمی‌کشد یا فقط نفس‌نفس می‌زند، <b>۱۱۵</b> را خبر کن یا از کسی بخواه.</li><li>فرد را به پشت روی سطح صاف و سفت بخوابان.</li><li><b>۳۰ فشار به قفسه‌ی سینه:</b> دست‌ها را روی وسط قفسه بگذار، شانه‌ها بالای دست‌ها و آرنج‌ها صاف. دست‌کم ۵ سانتی‌متر فشار بده، با سرعت ۱۰۰ تا ۱۲۰ بار در دقیقه، و بگذار قفسه کاملاً برگردد.</li><li><b>۲ نفس:</b> سر را به عقب و چانه را بالا بکش تا راه هوا باز شود. هر نفس حدود یک ثانیه باشد و قفسه بالا بیاید. اگر بالا نیامد، سر را دوباره تنظیم کن و دوباره امتحان کن.</li><li>همین چرخه را ادامه بده: ۳۰ فشار و ۲ نفس. اگر دستگاه شوک (<bdi dir="ltr">AED</bdi>) رسید، هرچه زودتر استفاده کن.</li></ol></div></details>
+<details class="acc glass"><summary>خفگی (فرد هوشیار است و نمی‌تواند حرف بزند)</summary><div class="acc-body">
+<ol class="steps"><li>اگر می‌تواند حرف بزند، گریه کند یا محکم سرفه کند، تشویقش کن سرفه کند و مراقب باش.</li><li>اگر نمی‌تواند حرف بزند، گریه کند یا سرفه کند، <b>۱۱۵</b> را خبر کن.</li><li><b>۵ ضربه به پشت:</b> فرد را از کمر به جلو خم کن و با کف دست، بین دو کتف ضربه بزن. هر ضربه جدا باشد.</li><li><b>۵ فشار به شکم:</b> مشت را بالای ناف بگذار و رو به داخل و بالا بکش. هر فشار جدا باشد. اگر فرد باردار است، خیلی درشت‌اندام است یا روی ویلچر است، به‌جای شکم روی قفسه‌ی سینه فشار بده.</li><li>۵ ضربه و ۵ فشار را تکرار کن تا فرد بتواند سرفه کند، حرف بزند یا نفس بکشد، یا بیهوش شود.</li><li>اگر بیهوش شد، آرام روی زمین بخوابانش و فشار قفسه‌ی سینه را شروع کن. قبل از نفس مصنوعی دهانش را نگاه کن و اگر جسم را دیدی با انگشت بیرون بیاور.</li></ol></div></details>
+<details class="acc glass"><summary>خونریزی شدید</summary><div class="acc-body">
+<ol class="steps"><li>فوراً <b>۱۱۵</b> را خبر کن یا از کسی بخواه.</li><li>محل خونریزی را پیدا کن. به مصدوم بگو بدان که فشار دردناک است.</li><li>یک گاز یا پارچه‌ی تمیز روی زخم بگذار.</li><li>با هر دو دست، مستقیم و محکم روی زخم فشار بده: شانه‌ها بالای دست‌ها و آرنج‌ها صاف، تا جایی که می‌توانی محکم.</li><li>اگر خون از گاز رد شد، گاز دیگری رویش بگذار و فشار را ادامه بده. گاز اول را برندار.</li><li>فقط اگر خونریزی قبل از رسیدن کمک بند آمد، با باند ببند. قبل و بعد از بستن، گردش خون پایین‌تر از زخم را بررسی کن.</li></ol></div></details>
+<details class="acc glass"><summary>سوختگی</summary><div class="acc-body">
+<ol class="steps"><li>هرچه زودتر، در حداکثر ۳ ساعت اول، محل سوخته را <b>۲۰ دقیقه</b> زیر آب خنک جاری نگه دار.</li><li>اگر آب جاری نیست، از آب بطری خنک یا حوله‌ی خیس استفاده کن.</li><li>لباس و زیورآلات اطراف را در بیاور، ولی چیزی را که به پوست چسبیده بود دست نزن.</li><li>بعد از خنک‌کردن، اگر داری، سلفون (نایلون چسبان) را شُل روی سوختگی بگذار و نپیچ.</li></ol>
+<div class="callout danger"><b>این کارها را نکن:</b> کِرم، روغن یا کره نمالی. چسب زخم یا پانسمان چسب‌دار نزن. تاول را نترکان.</div>
+<p><b>فوراً ۱۱۵ را خبر کن یا به اورژانس برو</b> اگر سوختگی خیلی بزرگ یا عمیق است، روی صورت یا ناحیه‌ی تناسلی است، یا از اسید، مواد شیمیایی یا برق بوده.</p></div></details>
+<details class="acc glass"><summary>کشیدگی و رگ‌به‌رگ‌شدن</summary><div class="acc-body">
+<ol class="steps"><li><b>استراحت:</b> نگذار عضو آسیب‌دیده کار کند.</li><li><b>سرما:</b> کیسه‌ی یخ یا سبزی یخ‌زده را در حوله بپیچ و هر بار حداکثر ۱۰ دقیقه روی محل بگذار.</li><li><b>فشار:</b> با باند کشی ببند تا عضو حمایت شود، ولی آن‌قدر سفت نه که فشار بیاورد.</li><li><b>بالا نگه‌داشتن:</b> عضو را بالاتر از سطح بدن نگه دار.</li></ol>
+<p>گرما نزن. اگر درد بهتر نشد یا آسیب دیگری هم هست، پزشک ببین. اگر شک داری استخوان شکسته، به پزشک مراجعه کن.</p></div></details>
+<details class="acc glass"><summary>غش‌کردن</summary><div class="acc-body">
+<p><b>اگر خودت احساس ضعف داری:</b> دراز بکش و پاها را بالا ببر. اگر نمی‌شود، بنشین و سرت را بین زانوها بگیر. آب بخور.</p>
+<p><b>اگر کسی غش کرد:</b></p>
+<ol class="steps"><li>آرام باش. شانه‌هایش را آرام تکان بده و بلند بپرس حالش خوب است؟</li><li>اگر جواب نداد، کمک بخواه، سرش را به عقب و چانه‌اش را بالا بکش تا نفس بکشد.</li><li>دست‌کم ۱۰ ثانیه نفسش را بررسی کن.</li><li>اگر عادی نفس می‌کشد، او را به پشت بخوابان و پاهایش را بالا ببر. اگر باردار است (به‌خصوص بعد از هفته‌ی ۲۸)، به پهلو بخوابانش.</li></ol>
+<p>معمولاً تا ۳۰ ثانیه به هوش می‌آید.</p>
+<p><b>۱۱۵ را خبر کن اگر:</b> نفس نمی‌کشد، تا یک دقیقه بیدار نشد، کامل بهبود نیافت یا حرف‌زدن و حرکت برایش سخت است، درد قفسه‌ی سینه یا ضربان تند و نامنظم دارد، به‌شدت آسیب دیده، می‌لرزد یا تشنج می‌کند، موقع ورزش یا موقع دراز کشیدن غش کرده.</p></div></details>
+<details class="acc glass"><summary>گرمازدگی</summary><div class="acc-body">
+<p><b>نشانه‌ها:</b> سردرد و سرگیجه، بی‌قراری و گیجی، پوست داغ و سرخ و خشک، ضربان نبض پرقدرت، دمای بدن بالای ۴۰ درجه، و افت سریع هوشیاری.</p>
+<ol class="steps"><li>فرد را به جای خنک و سایه ببر و لباس رویی‌اش را در بیاور.</li><li>فوراً <b>۱۱۵</b> را خبر کن. گرمازدگی تهدیدکننده‌ی جان است.</li><li>او را بنشان و با ملافه‌ی خیس و خنک خنکش کن. اگر نیست، باد بزن یا با آب سرد اسفنج بکش. کیسه‌ی سرد زیر بغل و دور گردن هم کمک می‌کند.</li><li>وقتی دمایش عادی شد، ملافه‌ی خیس را با خشک عوض کن.</li><li>مرتب دما، نفس، نبض و هوشیاری‌اش را بررسی کن. اگر دوباره داغ شد، دوباره خنکش کن.</li></ol></div></details>
+<div class="card glass"><h3>منابع</h3><ul class="dots src">
+<li><a href="https://www.redcross.org/content/dam/redcross/training-services/no-index/Adult_ReadyReferenceCards_r21.pdf" target="_blank" rel="noopener">صلیب سرخ آمریکا، کارت‌های مرجع بزرگسال (احیا، خفگی، خونریزی)</a></li>
+<li><a href="https://www.nhs.uk/conditions/burns-and-scalds/treatment/" target="_blank" rel="noopener">سرویس سلامت بریتانیا، سوختگی</a></li>
+<li><a href="https://www.nhs.uk/conditions/Fainting" target="_blank" rel="noopener">سرویس سلامت بریتانیا، غش</a></li>
+<li><a href="https://redcross.org.uk/first-aid/learn-first-aid/strains-and-sprains" target="_blank" rel="noopener">صلیب سرخ بریتانیا، رگ‌به‌رگ‌شدن</a></li>
+<li><a href="https://www.sja.org.uk/get-advice/first-aid-advice/effects-of-heat-and-cold/heatstroke" target="_blank" rel="noopener">سنت جان، گرمازدگی</a></li>
+<li><a href="https://mui.ac.ir/en/emergency-information" target="_blank" rel="noopener">دانشگاه علوم پزشکی، شماره‌های اضطراری ایران</a></li>
 </ul></div>
-<div class="panel glass"><h2>قبل از قطعی این کارها را بکن</h2>
-<ol class="rank">
-<li class="resource"><div class="txt"><strong>با وای‌فای نصب و دانلود کن</strong><small>نقشه‌ی شهر خودت و شهرهای محل رفت‌وآمدت را بگیر.</small></div></li>
-<li class="resource"><div class="txt"><strong>آزمایش کن</strong><small>حالت پرواز را روشن کن و ببین نقشه بدون اینترنت باز می‌شود و آدرس را پیدا می‌کند.</small></div></li>
-<li class="resource"><div class="txt"><strong>یک برنامه‌ی دوم هم داشته باش</strong><small>اگر یکی کار نکرد یا نقشه‌اش قدیمی بود، دومی پشتیبان باشد.</small></div></li>
-</ol>
-<div class="note">نقشه‌های آفلاین قدیمی می‌شوند. هر چند وقت یک بار، وقتی اینترنت داری، آن‌ها را به‌روز کن.</div></div></section>
-<section class="content" id="prepare"><a class="back" href="#">← بازگشت</a><div class="panel glass"><h2>راهنمای آمادگی</h2><p class="sub">چند کار ساده برای آمادگی پیش از اختلال.</p>
-<ul class="plain"><li class="resource"><div class="txt"><strong>اطلاعات ضروری</strong><small>شماره‌های تماس و نشانی‌های مهم را آفلاین در دسترس داشته باشید.</small></div></li>
-<li class="resource"><div class="txt"><strong>محتوای آفلاین</strong><small>نقشه‌ها، راهنماها و اسناد ضروری را از قبل دریافت کنید.</small></div></li>
-<li class="resource"><div class="txt"><strong>هماهنگی خانوادگی</strong><small>راه ارتباطی جایگزین و محل ملاقات را از قبل مشخص کنید.</small></div></li>
-<li class="resource"><div class="txt"><strong>آمادگی دستگاه</strong><small>شارژر، پاوربانک و نسخه پشتیبان را آماده نگه دارید.</small></div></li></ul></div></section>
+</section>
+
+<!-- DIGITAL SECURITY -->
+<section class="page" id="p-security" data-tab="resources">
+<a class="back" href="#resources">→ منابع و آموزش‌ها</a>
+<div class="card glass"><h2>امنیت دیجیتال</h2><p class="sub">کارهای ساده‌ای که بیشترین اثر را دارند. اگر وقت کم داری، از «پایه‌ها» شروع کن.</p></div>
+<details class="acc glass" open><summary>پایه‌ها: پنج کار که همین امروز بکن</summary><div class="acc-body">
+<ol class="steps"><li><b>قفل صفحه بگذار.</b> رمز یا پین بلند (دست‌کم ۶ رقم) بگذار و به کسی نگو.</li><li><b>گوشی و برنامه‌ها را به‌روز کن.</b> به‌روزرسانی‌ها حفره‌های امنیتی را می‌بندند.</li><li><b>برنامه را فقط از منبع رسمی نصب کن.</b> فایل‌هایی که در گروه‌ها دست‌به‌دست می‌شوند ممکن است دست‌کاری شده باشند.</li><li><b>از عکس‌ها و مخاطبین پشتیبان بگیر.</b></li><li><b>رمز ایمیل اصلی‌ات را قوی و یکتا کن.</b> هر حساب دیگری را می‌شود با ایمیل بازیابی کرد.</li></ol></div></details>
+<details class="acc glass"><summary>رمز عبور قوی</summary><div class="acc-body">
+<ul class="dots"><li>رمز <b>بلند</b> بهتر از رمز پیچیده و کوتاه است. چند کلمه‌ی بی‌ارتباط پشت هم، مثل یک جمله‌ی عجیب، هم بلند است و هم به یاد می‌ماند.</li><li>برای هر حساب یک رمز جدا. اگر یکی لو برود، بقیه سالم می‌مانند.</li><li>نگه‌داشتن رمزهای زیاد سخت است. یک «مدیر رمز» (<bdi dir="ltr">Password Manager</bdi>) معتبر این کار را می‌کند و تو فقط یک رمز اصلی را به خاطر می‌سپاری.</li><li>رمز اصلی را در هیچ‌جا، حتی در پیام‌رسان، نفرست.</li></ul></div></details>
+<details class="acc glass"><summary>تأیید دومرحله‌ای</summary><div class="acc-body">
+<ul class="dots"><li>یعنی علاوه بر رمز، یک کد هم لازم است. حتی اگر رمزت لو برود، کسی نمی‌تواند وارد شود.</li><li>اول برای <b>ایمیل اصلی</b> روشنش کن، بعد برای بقیه‌ی حساب‌های مهم.</li><li>«کدهای پشتیبان» (<bdi dir="ltr">Backup codes</bdi>) را همان لحظه ذخیره کن و جای امنی بگذار. اگر گوشی‌ات گم شد یا پیامک دیر رسید، همین کدها نجاتت می‌دهند.</li><li>در اختلال شبکه ممکن است پیامک دیر برسد. اگر می‌توانی، به‌جای پیامک از برنامه‌ی تولید کد استفاده کن.</li></ul></div></details>
+<details class="acc glass"><summary>فیشینگ: چطور فریب نخوریم</summary><div class="acc-body">
+<ul class="dots"><li>پیامی که می‌گوید «حسابت بسته می‌شود»، «جایزه بردی» یا «همین الان رمزت را وارد کن»، معمولاً کلاهبرداری است.</li><li>روی لینک پیام‌های ناخواسته نزن. اگر موضوع واقعی است، خودت آدرس سایت را در مرورگر بنویس.</li><li>قبل از وارد‌کردن رمز، آدرس صفحه را کامل بخوان. حرف اضافه یا شکل عجیب، نشانه‌ی سایت جعلی است.</li><li>فایل و برنامه‌ای را که کسی ناگهان فرستاده باز نکن، حتی اگر از آشنا باشد. اول بپرس خودش فرستاده یا نه.</li></ul></div></details>
+<details class="acc glass"><summary>محافظت از گوشی</summary><div class="acc-body">
+<ul class="dots"><li>در تنظیمات، بخش حریم خصوصی، ببین کدام برنامه به دوربین، میکروفون و موقعیت مکانی دسترسی دارد. برنامه‌هایی که نیاز ندارند را ببند.</li><li>برنامه‌های ناشناخته یا بی‌استفاده را حذف کن.</li><li>وقتی لازم نیست، بلوتوث و موقعیت مکانی را خاموش کن.</li><li>بدون قفل صفحه، اطلاعات گوشی در دسترس هر کسی است که آن را پیدا کند.</li></ul></div></details>
+<details class="acc glass"><summary>وی‌پی‌ان و ناشناسی</summary><div class="acc-body">
+<ul class="dots"><li>وی‌پی‌ان تو را ناشناس نمی‌کند. فقط مسیر ترافیک را عوض می‌کند و صاحب سرویس ممکن است ببیند به چه سایت‌هایی وصل می‌شوی.</li><li>برنامه‌ی وی‌پی‌ان خواست گواهی نصب کنی، قبول نکن. با آن می‌تواند ترافیک امن تو را هم بخواند.</li><li>روی کانفیگ‌های رایگان ناشناس، وارد بانک یا ایمیل اصلی نشو.</li></ul></div></details>
+<div class="card glass"><h3>بیشتر بخوان</h3><p class="src">راهنمای کامل و به‌روز در <a href="https://ssd.eff.org/" target="_blank" rel="noopener"><bdi dir="ltr">ssd.eff.org</bdi></a> (سایت بنیاد <bdi dir="ltr">EFF</bdi>، انگلیسی) هست. موضوع‌هایش شامل رمز، تأیید دومرحله‌ای، فیشینگ و امنیت گوشی است. این صفحه خلاصه‌ی نکته‌های عمومی همان‌هاست و من متن آن راهنما را کلمه‌به‌کلمه ندیده‌ام.</p></div>
+</section>
+
+<!-- COMMUNICATIONS -->
+<section class="page" id="p-comms" data-tab="resources">
+<a class="back" href="#resources">→ منابع و آموزش‌ها</a>
+<div class="card glass"><h2>مدیریت ارتباطات</h2><p class="sub">وقتی اینترنت قطع می‌شود، مهم‌ترین چیز این است که از قبل بدانی با چه کسی و چطور حرف بزنی.</p></div>
+<details class="acc glass" open><summary>برنامه‌ی خانواده، همین امروز</summary><div class="acc-body">
+<ul class="dots"><li><b>شماره‌ها را روی کاغذ بنویس:</b> خانواده، اورژانس، و یک نفر که در شهر دیگری است. گوشی خاموش یا خراب می‌شود، کاغذ نه.</li><li><b>یک نفر از شهر دیگر را «مرکز خبر» کنید.</b> اگر ارتباط محلی قطع بود، همه به او خبر بدهند.</li><li><b>دو محل ملاقات مشخص کنید:</b> یکی نزدیک خانه، یکی بیرون از محله.</li><li><b>ساعت خبر‌دادن تعیین کنید.</b> مثلاً هر روز ساعت ۸ شب یک پیام کوتاه.</li><li>پیام کوتاه و مشخص بفرست: چه کسی، کجا، چه چیزی لازم است.</li></ul></div></details>
+<details class="acc glass"><summary>پیام‌رسانی بدون اینترنت با <bdi dir="ltr">Briar</bdi></summary><div class="acc-body">
+<p><bdi dir="ltr">Briar</bdi> بدون اینترنت و فقط با بلوتوث، وای‌فای یا کارت حافظه بین دو گوشی پیام می‌رساند. وقتی اینترنت هست، از طریق <bdi dir="ltr">Tor</bdi> پیام می‌فرستد. روی اندروید است.</p>
+<div class="callout warn">باید <b>از قبل</b>، همین حالا، آن را نصب کنی و با خانواده یکدیگر را اضافه کنید. وسط قطعی دیگر دیر است. برای اضافه‌کردن دو نفر باید کنار هم باشید.</div>
+<ol class="steps"><li><bdi dir="ltr">Briar</bdi> را از سایت رسمی <bdi class="en" dir="ltr">briarproject.org</bdi>، <bdi dir="ltr">Google Play</bdi> یا <bdi dir="ltr">F‑Droid</bdi> نصب کن.</li><li>باز کن و یک <b>نام مستعار</b> و یک <b>رمز</b> انتخاب کن. نام را بعداً نمی‌شود عوض کرد. اگر رمز را فراموش کنی راهی برای بازیابی نیست.</li><li>وقتی خواست، اجازه بده برنامه در پس‌زمینه بماند (بهینه‌سازی باتری را برایش خاموش کن). در گوشی‌های <bdi dir="ltr">Huawei</bdi> و <bdi dir="ltr">Xiaomi</bdi> مراحل اضافه‌ای نشان می‌دهد.</li><li>علامت <b>+</b> را بزن و <b><bdi dir="ltr">Add contact nearby</bdi></b> را انتخاب کن.</li><li>اجازه‌ها را بده: دوربین (برای خواندن <bdi dir="ltr">QR</bdi>)، موقعیت مکانی (فقط برای پیدا‌کردن بلوتوث اطراف) و بلوتوث.</li><li><bdi dir="ltr">QR</bdi> دوست را بخوان و او هم <bdi dir="ltr">QR</bdi> تو را بخواند. حدود ۳۰ ثانیه صبر کن. اگر وصل نشد، هر دو به فهرست مخاطبین برگردید و دوباره شروع کنید.</li><li>روی اسم مخاطب بزن و پیام بنویس. دایره‌ی سبز کنار نام یعنی وصل هستید.</li></ol>
+<div class="btns"><a class="btn main glass" href="https://briarproject.org/quick-start/" target="_blank" rel="noopener">راهنمای رسمی ↗</a></div></div></details>
+<details class="acc glass"><summary>مدیریت باتری</summary><div class="acc-body">
+<ul class="dots"><li>پاوربانک را شارژ نگه دار و شارژر را جایی دم‌دست بگذار.</li><li>روشنایی صفحه را کم کن و حالت صرفه‌جویی باتری را روشن کن.</li><li>وقتی لازم نیست، گوشی را روی حالت پرواز بگذار.</li><li>برنامه‌های اضافی را ببند و موقعیت مکانی و بلوتوث را خاموش کن، مگر وقتی لازم است.</li></ul></div></details>
+<details class="acc glass"><summary>پیام و تماس عادی</summary><div class="acc-body">
+<ul class="dots"><li>در اختلال‌های محدود ممکن است پیامک و تماس معمولی هنوز کار کند. شماره‌های مهم را از قبل بلد باش.</li><li>موقعیت خودت را در شبکه‌های عمومی منتشر نکن.</li><li>به پیام‌هایی که خبر ناگهانی و هولناک می‌دهند فوراً باور نکن و از منبع دوم تأیید بگیر.</li></ul></div></details>
+</section>
+
+<!-- MAPS -->
+<section class="page" id="p-maps" data-tab="maps">
+<a class="back" href="#">→ بازگشت</a>
+<div class="card glass"><h2>نقشه‌های آفلاین</h2>
+<p class="sub">نقشه‌ی هر شهر و کشور حجم زیادی دارد و داخل خود نور جا نمی‌شود. برای همین، نور راه دانلود نقشه‌ی ایران را در یک برنامه‌ی نقشه نشان می‌دهد. نقشه را باید <b>پیش از قطعی و با اینترنت</b> دانلود کنی.</p></div>
+<div class="card glass"><h2><bdi dir="ltr">CoMaps</bdi> و <bdi dir="ltr">Organic Maps</bdi></h2><p><span class="chip">رایگان</span><span class="chip">متن‌باز</span><span class="chip">بدون ثبت‌نام</span></p>
+<p class="sub">دو برنامه‌ی نقشه‌ی آفلاین مشابه. <bdi dir="ltr">CoMaps</bdi> شاخه‌ای از <bdi dir="ltr">Organic Maps</bdi> است. مراحل زیر از راهنمای <bdi dir="ltr">CoMaps</bdi> است و در <bdi dir="ltr">Organic Maps</bdi> هم ظاهر مشابهی دارد.</p>
+<h3>نصب</h3>
+<ol class="steps"><li>یکی از این دو برنامه را نصب کن. در اندروید از <bdi dir="ltr">Google Play</bdi> یا <bdi dir="ltr">F‑Droid</bdi> نصبش کن.</li><li>اگر <bdi dir="ltr">iPhone</bdi> داری، نصبش را از <bdi dir="ltr">App Store</bdi> انجام بده.</li></ol>
+<h3>دانلود نقشه‌ی ایران</h3>
+<ol class="steps"><li>برنامه را باز کن و روی ایران زوم کن. اگر نقشه‌ی آن منطقه را نداشته باشی، خودش دانلودش را پیشنهاد می‌دهد.</li><li>یا منوی پایین صفحه را بزن، وارد صفحه‌ی دانلود نقشه‌ها (<bdi dir="ltr">Maps</bdi>) شو و دکمه‌ی بزرگ سبز <b>+</b> را بزن.</li><li>نقشه‌ها بر اساس کشور و بعد استان یا منطقه دسته‌بندی شده‌اند. ایران را پیدا کن و دانلود کن. ممکن است کشور به چند تکه تقسیم شده باشد؛ همه‌ی تکه‌های مورد نیازت را بگیر.</li><li>با وای‌فای دانلود کن و فضای خالی کافی داشته باش. برنامه حجم را قبل از دانلود نشان می‌دهد.</li></ol>
+<h3>آزمایش (خیلی مهم)</h3>
+<ol class="steps"><li>گوشی را روی حالت پرواز بگذار.</li><li>برنامه را باز کن و شهرت را ببین، یک خیابان یا محل را جستجو کن.</li></ol>
+<h3>مسیریابی</h3>
+<ol class="steps"><li>صبر کن موقعیتت روی نقشه بیاید.</li><li>مقصد را با جستجو، نشانک‌ها یا زدن روی نقشه انتخاب کن.</li><li>دکمه‌ی «<bdi dir="ltr">Route to</bdi>» پایین صفحه را بزن. مسافت و زمان نشان داده می‌شود.</li><li>بالای صفحه نوع مسیر را انتخاب کن (ماشین، پیاده، مترو، دوچرخه). بعد <b><bdi dir="ltr">Start</bdi></b> را بزن.</li><li>برای پایان، پیکان گوشه‌ی پایین سمت راست را بزن و بعد <bdi dir="ltr">Stop</bdi> را انتخاب کن.</li></ol>
+<div class="callout warn">در منابعی که دیدم نوشته نشده که مسیریابی بدون اینترنت کار می‌کند. با حالت پرواز خودت امتحان کن.</div>
+<h3>اگر نقشه دانلود نشد</h3>
+<ul class="dots"><li>کمی صبر کن و دوباره امتحان کن.</li><li>شبکه را عوض کن. ممکن است اینترنت یا مودمت دانلود را بسته باشد.</li><li>فضای خالی گوشی را بررسی کن.</li><li>اگر نقشه‌ی قدیمی به‌روز نمی‌شود، پاکش کن و دوباره دانلود کن.</li></ul>
+<div class="btns"><a class="btn main glass" href="https://organicmaps.app" target="_blank" rel="noopener">دانلود <bdi dir="ltr">Organic Maps</bdi> ↗</a><a class="btn glass" href="https://f-droid.org/fa/packages/app.comaps.fdroid/" target="_blank" rel="noopener">دانلود <bdi dir="ltr">CoMaps</bdi> ↗</a></div></div>
+<div class="card glass"><h3>گزینه‌های دیگر</h3>
+<ul class="dots"><li><b><bdi dir="ltr">Google Maps</bdi>:</b> داخل برنامه از عکس پروفایل وارد «نقشه‌های آفلاین» شو و منطقه را انتخاب کن. من نتوانستم بسنجم که دانلود آفلاین برای ایران فعال است یا نه.</li><li><b>نشان و بلد آفلاین:</b> دو برنامه‌ی ایرانی که طبق عنوان مقاله‌ها نسخه‌ی آفلاین دارند. جزئیات و امنیتشان را بررسی نکردم.</li></ul>
+<p class="sub">نقشه‌ی قدیمی می‌شود. هر چند وقت یک بار، وقتی اینترنت داری، نقشه‌ها را به‌روز کن.</p></div>
+</section>
+
+<!-- PREPARE -->
+<section class="page" id="p-prepare" data-tab="prepare">
+<a class="back" href="#">→ بازگشت</a>
+<div class="card glass"><h2>راهنمای آمادگی</h2><p class="sub">هر کاری را که انجام دادی تیک بزن. تیک‌ها فقط روی همین گوشی می‌ماند.</p>
+<label class="chk"><input type="checkbox" id="c1"><span>شماره‌های مهم (خانواده، اورژانس، یک نفر در شهر دیگر) را روی کاغذ بنویس.</span></label>
+<label class="chk"><input type="checkbox" id="c2"><span>دست‌کم دو برنامه‌ی اتصال را از قبل نصب و امتحان کن.</span></label>
+<label class="chk"><input type="checkbox" id="c3"><span>نقشه‌ی شهرت را آفلاین دانلود کن و با حالت پرواز امتحان کن.</span></label>
+<label class="chk"><input type="checkbox" id="c4"><span><bdi dir="ltr">Briar</bdi> را نصب کن و با اعضای خانواده یکدیگر را اضافه کنید.</span></label>
+<label class="chk"><input type="checkbox" id="c5"><span>پاوربانک و شارژر را شارژ نگه دار.</span></label>
+<label class="chk"><input type="checkbox" id="c6"><span>داروهای ضروری و جعبه‌ی کمک‌های اولیه را آماده کن.</span></label>
+<label class="chk"><input type="checkbox" id="c7"><span>از مدارک مهم عکس بگیر و یک کپی کاغذی نگه دار.</span></label>
+<label class="chk"><input type="checkbox" id="c8"><span>محل ملاقات خانواده و ساعت خبر‌دادن را تعیین کن.</span></label>
+<label class="chk"><input type="checkbox" id="c9"><span>از عکس‌ها و مخاطبین پشتیبان بگیر.</span></label>
+<label class="chk"><input type="checkbox" id="c10"><span>مقداری پول نقد کنار بگذار.</span></label>
+</div>
+<div class="card glass"><h3>راهنماهای مرتبط</h3><div class="rows">
+<a class="row glass" href="#tools"><span class="rt"><b>ابزارهای اینترنت</b></span><svg class="chev" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></a>
+<a class="row glass" href="#comms"><span class="rt"><b>مدیریت ارتباطات</b></span><svg class="chev" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></a>
+<a class="row glass" href="#aid"><span class="rt"><b>کمک‌های اولیه</b></span><svg class="chev" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></a></div></div>
+</section>
+
 </main>
-<footer>Raha 0.3 · هیچ اطلاعات شخصی جمع‌آوری یا ارسال نمی‌شود.</footer></div>
+<footer class="foot"><bdi dir="ltr">Nour</bdi> 0.4 · هیچ اطلاعات شخصی جمع‌آوری یا ارسال نمی‌شود.</footer>
+</div>
+<div class="dock"><nav class="glass" aria-label="بخش‌های اصلی">
+<a href="#" data-tab="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/></svg>خانه</a>
+<a href="#tools" data-tab="tools"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.500 2.600 3.800 5.600 3.800 9s-1.300 6.400-3.800 9c-2.500-2.600-3.800-5.600-3.800-9S9.500 5.600 12 3z"/></svg>ابزارها</a>
+<a href="#resources" data-tab="resources"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v17H6a2 2 0 0 0-2 2z"/><path d="M4 20V5M9 8h6"/></svg>آموزش</a>
+<a href="#maps" data-tab="maps"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.100 7-11a7 7 0 1 0-14 0c0 4.900 7 11 7 11z"/><circle cx="12" cy="10" r="2.500"/></svg>نقشه</a>
+<a href="#prepare" data-tab="prepare"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.500 6 1.200 1.200L7 5M3.500 12l1.200 1.200L7 11M3.500 18l1.200 1.200L7 17"/></svg>آمادگی</a>
+</nav></div>
 <script>
 (function(){
-var home=document.getElementById('home'),views=['tools','resources','maps','prepare'];
-function route(){var id=location.hash.slice(1),ok=views.indexOf(id)>-1;home.hidden=ok;
-  document.querySelectorAll('.content').forEach(function(x){x.classList.toggle('active',ok&&x.id===id)});window.scrollTo(0,0)}
+var pages=[].slice.call(document.querySelectorAll('.page')),tabs=[].slice.call(document.querySelectorAll('.dock a'));
+function route(){
+  var h=location.hash.slice(1)||'home',el=document.getElementById('p-'+h)||document.getElementById('p-home'),tab=el.getAttribute('data-tab');
+  pages.forEach(function(p){p.classList.toggle('on',p===el)});
+  tabs.forEach(function(a){a.setAttribute('aria-current',a.getAttribute('data-tab')===tab?'page':'false')});
+  window.scrollTo(0,0);
+}
 addEventListener('hashchange',route);route();
-var btn=document.getElementById('theme'),root=document.documentElement;
+var btn=document.getElementById('theme'),root=document.documentElement,moon=document.getElementById('ico-moon'),sun=document.getElementById('ico-sun');
 function dark(){var t=root.getAttribute('data-theme');return t?t==='dark':matchMedia('(prefers-color-scheme: dark)').matches}
-var moon=document.getElementById('ico-moon'),sun=document.getElementById('ico-sun');
 function icon(){var d=dark();moon.toggleAttribute('hidden',d);sun.toggleAttribute('hidden',!d)}
 btn.addEventListener('click',function(){root.setAttribute('data-theme',dark()?'light':'dark');icon()});icon();
+var KEY='nour-checks',saved={};
+try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){saved={}}
+[].forEach.call(document.querySelectorAll('.chk input'),function(i){
+  i.checked=!!saved[i.id];
+  i.addEventListener('change',function(){saved[i.id]=i.checked;try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}});
+});
 })();
 </script>
 <script>if("serviceWorker" in navigator&&location.protocol!=="file:")addEventListener("load",function(){navigator.serviceWorker.register("./service-worker.js").catch(function(){})});</script>
