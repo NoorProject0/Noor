@@ -1,4 +1,4 @@
-const CACHE = "raha-pwa-v2";
+const CACHE = "raha-pwa-v3";
 const FILES = ["./", "./index.html", "./manifest.json", "./icons/raha.svg", "./icons/raha-192.png", "./icons/raha-512.png"];
 self.addEventListener("install", e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting())));
 self.addEventListener("activate", e => e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())));
