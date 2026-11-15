@@ -1,0 +1,17 @@
+{
+  "name": "Nour | نور - همراه آفلاین",
+  "short_name": "نور",
+  "description": "چراغ راه، پیش از خاموشی برای آمادگی در زمان اختلال اینترنت",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f2f6fc",
+  "theme_color": "#f2f6fc",
+  "icons": [
+    { "src": "./icons/nour-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/nour-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/nour.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
