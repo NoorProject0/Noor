@@ -4,26 +4,26 @@
 <style>
 /* Layout: minimal. Few frosted glass layers (page cards, tiles, dock); everything inside a card is a flat tint. Text colours are set for strong contrast on both themes. */
 :root{
-  --bg:#f2f6fc;--glass-a:rgba(255,255,255,.44);--glass-b:rgba(255,255,255,.16);--spec:rgba(255,255,255,.7);
+  --bg:#f2f6fc;--glass-a:rgba(255,255,255,.46);--glass-b:rgba(255,255,255,.12);--spec:rgba(255,255,255,.85);
   --line:rgba(255,255,255,.95);--edge:rgba(20,50,90,.14);--hl:#fff;--hl2:rgba(20,50,90,.07);
   --inner:rgba(255,255,255,.46);--ink:#0e1a2b;--muted:#3a4a62;--accent:#1d5896;--wash:rgba(40,100,180,.10);
-  --shadow:0 10px 32px rgba(30,60,100,.10);--dock:rgba(255,255,255,.55);
+  --shadow:0 10px 32px rgba(30,60,100,.10);--dock:rgba(255,255,255,.55);--glow:rgba(255,255,255,.35);
   --o1:rgba(90,150,245,.75);--o2:rgba(180,140,250,.55);--o3:rgba(80,210,200,.55);
   --warn-bg:rgba(255,236,170,.78);--warn-fg:#4a2d00;--danger-bg:rgba(255,208,208,.78);--danger-fg:#640e0e;
   --font:"Vazirmatn",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#09111f;--glass-a:rgba(255,255,255,.12);--glass-b:rgba(255,255,255,.03);--spec:rgba(255,255,255,.18);
+  --bg:#09111f;--glass-a:rgba(255,255,255,.14);--glass-b:rgba(255,255,255,.02);--spec:rgba(255,255,255,.26);
   --line:rgba(255,255,255,.3);--edge:rgba(255,255,255,.15);--hl:rgba(255,255,255,.34);--hl2:rgba(0,0,0,.3);
   --inner:rgba(255,255,255,.07);--ink:#f4f8fd;--muted:#e1e9f3;--accent:#a8cdf7;--wash:rgba(150,195,245,.14);
-  --shadow:0 14px 38px rgba(0,0,0,.42);--dock:rgba(8,16,32,.6);
+  --shadow:0 14px 38px rgba(0,0,0,.42);--dock:rgba(8,16,32,.6);--glow:rgba(255,255,255,.07);
   --o1:rgba(50,110,230,.7);--o2:rgba(120,80,220,.55);--o3:rgba(30,170,170,.5);
   --warn-bg:rgba(100,72,8,.72);--warn-fg:#ffe4a6;--danger-bg:rgba(115,30,30,.72);--danger-fg:#ffc9c9;color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#09111f;--glass-a:rgba(255,255,255,.12);--glass-b:rgba(255,255,255,.03);--spec:rgba(255,255,255,.18);
+  --bg:#09111f;--glass-a:rgba(255,255,255,.14);--glass-b:rgba(255,255,255,.02);--spec:rgba(255,255,255,.26);
   --line:rgba(255,255,255,.3);--edge:rgba(255,255,255,.15);--hl:rgba(255,255,255,.34);--hl2:rgba(0,0,0,.3);
   --inner:rgba(255,255,255,.07);--ink:#f4f8fd;--muted:#e1e9f3;--accent:#a8cdf7;--wash:rgba(150,195,245,.14);
-  --shadow:0 14px 38px rgba(0,0,0,.42);--dock:rgba(8,16,32,.6);
+  --shadow:0 14px 38px rgba(0,0,0,.42);--dock:rgba(8,16,32,.6);--glow:rgba(255,255,255,.07);
   --o1:rgba(50,110,230,.7);--o2:rgba(120,80,220,.55);--o3:rgba(30,170,170,.5);
   --warn-bg:rgba(100,72,8,.72);--warn-fg:#ffe4a6;--danger-bg:rgba(115,30,30,.72);--danger-fg:#ffc9c9;color-scheme:dark}
 *{box-sizing:border-box}
@@ -32,14 +32,14 @@ html{-webkit-text-size-adjust:100%}
 body{margin:0;min-height:100vh;color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.95;background-color:var(--bg);
   -webkit-tap-highlight-color:transparent;
   padding-block:20px 128px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.orbs{position:fixed;inset:0;z-index:-1;pointer-events:none;
+.orbs{position:fixed;inset:-15%;animation:drift 40s ease-in-out infinite alternate;will-change:transform;z-index:-1;pointer-events:none;
   background:radial-gradient(60vmax 60vmax at 88% -8%,var(--o1),transparent 70%),radial-gradient(55vmax 55vmax at -12% 46%,var(--o2),transparent 70%),radial-gradient(50vmax 50vmax at 70% 108%,var(--o3),transparent 70%)}
 button,a{font:inherit}button{cursor:pointer}
 a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .wrap{max-width:760px;margin:0 auto}
 .glass{background:linear-gradient(135deg,var(--spec),transparent 42%),linear-gradient(145deg,var(--glass-a),var(--glass-b));
-  border:1px solid var(--line);backdrop-filter:blur(56px) saturate(220%) ;-webkit-backdrop-filter:blur(56px) saturate(220%) ;
-  box-shadow:var(--shadow),inset 0 1px 0 var(--hl),inset 0 -1px 0 var(--hl2)}
+  border:1px solid var(--line);backdrop-filter:blur(64px) saturate(240%);-webkit-backdrop-filter:blur(64px) saturate(240%);
+  box-shadow:var(--shadow),inset 0 1px 0 var(--hl),inset 0 -1px 0 var(--hl2),inset 0 0 22px var(--glow)}
 .card .glass,.acc .glass{background:var(--inner);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none;border:1px solid var(--edge)}
 header.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:12px}
 .brand{display:flex;gap:12px;align-items:center}
@@ -107,6 +107,17 @@ footer.foot{text-align:center;color:var(--muted);font-size:13px;margin-top:22px;
 .dock a[aria-current="page"]{color:var(--ink);background:var(--wash);font-weight:600}
 @media (max-width:650px){.tiles{grid-template-columns:repeat(2,1fr)}.hero{padding:26px 14px 22px}.tile{min-height:128px}.card{padding:16px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+@keyframes drift{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(-4%,3%,0) scale(1.08)}}
+@keyframes rise{from{opacity:0;transform:translate3d(0,12px,0)}to{opacity:1;transform:none}}
+html{scroll-behavior:smooth}
+.page.on{animation:rise .38s cubic-bezier(.22,1,.36,1) both}
+.tile,a.row,.round,.btn{transition:transform .22s cubic-bezier(.22,1,.36,1),background .2s}
+.tile:active,a.row:active,.round:active,.btn:active{transform:scale(.97)}
+.hero p.lead{font-size:clamp(19px,4.8vw,25px);line-height:1.85;color:var(--ink);margin:0;font-weight:700;text-wrap:balance}
+.hero{padding:40px 22px 30px}
+.callout.ok{background:var(--wash);color:var(--ink);border:1px solid var(--edge)}
+@media (prefers-reduced-motion:reduce){.orbs,.page.on{animation:none!important}html{scroll-behavior:auto}}
 </style>
 </head><body>
 
@@ -118,8 +129,8 @@ footer.foot{text-align:center;color:var(--muted);font-size:13px;margin-top:22px;
 
 <!-- HOME -->
 <section class="page on" id="p-home" data-tab="home">
-<div class="callout warn"><b>یادآوری:</b> این برنامه برای آمادگی <b>قبل از قطعی اینترنت</b> است. اگر آن را پیش از قطعی نصب نکرده و یک بار با اینترنت باز نکرده باشی، بعد از قطعی دیگر در دسترس نخواهد بود.</div>
-<div class="hero glass"><h1>امروز آماده شو، تا فردا نگران نباشی</h1><p>ابزارها و آموزش‌های ضروری را پیش از قطعی اینترنت آماده کنید.</p><div class="pill glass">بدون حساب کاربری · بدون ردیابی</div></div>
+<div class="callout warn"><b>یادآوری از سازنده:</b> من این برنامه را برای آمادگی <b>قبل از قطعی اینترنت</b> ساخته‌ام. اگر آن را پیش از قطعی نصب نکنی و یک بار با اینترنت باز نکنی، بعد از قطعی دیگر در دسترس نخواهد بود.</div>
+<div class="hero glass"><p class="lead"><b>ابزارها و آموزش‌های ضروری را پیش از قطعی اینترنت آماده کنید.</b></p><div class="pill glass">بدون حساب کاربری · بدون ردیابی</div></div>
 <div class="heading">دسترسی سریع</div>
 <div class="tiles">
 <a class="tile glass" href="#tools"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.500 2.600 3.800 5.600 3.800 9s-1.300 6.400-3.800 9c-2.500-2.600-3.800-5.600-3.800-9S9.500 5.600 12 3z"/></svg></span><b>ابزارهای اینترنت</b><small>نصب قدم‌به‌قدم</small></a>
@@ -127,14 +138,15 @@ footer.foot{text-align:center;color:var(--muted);font-size:13px;margin-top:22px;
 <a class="tile glass" href="#maps"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.100 7-11a7 7 0 1 0-14 0c0 4.900 7 11 7 11z"/><circle cx="12" cy="10" r="2.500"/></svg></span><b>نقشه‌های آفلاین</b><small>نقشه‌ی ایران را دانلود کن</small></a>
 <a class="tile glass" href="#prepare"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.500 6 1.200 1.200L7 5M3.500 12l1.200 1.200L7 11M3.500 18l1.200 1.200L7 17"/></svg></span><b>راهنمای آمادگی</b><small>چک‌لیست قابل تیک‌زدن</small></a>
 </div>
+<div class="card glass"><h3>از طرف سازنده</h3><p class="sub">من این برنامه را ساخته‌ام تا هر کسی بتواند پیش از قطعی اینترنت، ابزارهای مطمئن و آموزش‌های لازم را آماده کند. برای استفاده از آن به حساب کاربری نیاز نیست و من هیچ اطلاعاتی از تو جمع نمی‌کنم.</p></div>
 </section>
 
 <!-- TOOLS -->
 <section class="page" id="p-tools" data-tab="tools">
 <a class="back" href="#">→ بازگشت</a>
 <div class="card glass"><h2>ابزارهای اینترنت</h2>
-<p class="sub">وی‌پی‌ان برنامه‌ای است که اینترنت گوشی را از مسیر دیگری رد می‌کند تا سایت‌های بسته باز شوند. روی هر برنامه بزن تا مراحل نصب و اتصالش را ببینی.</p>
-<div class="callout warn"><b>مهم:</b> اگر اینترنت بین‌الملل کاملاً قطع شود، هیچ‌کدام از این برنامه‌ها کار نمی‌کنند. این ترتیب از گزارش‌های خبری و راهنماها گرفته شده، آزمایش نشده و فیلترینگ هر هفته عوض می‌شود. مراحل برای اندروید نوشته شده؛ روی <bdi dir="ltr">iPhone</bdi> مشابه است ولی ظاهر برنامه کمی فرق دارد.</div>
+<p class="sub">من این بخش را برای راحتی تو چیده‌ام. وی‌پی‌ان برنامه‌ای است که اینترنت گوشی را از مسیر دیگری رد می‌کند تا سایت‌های بسته باز شوند. روی هر برنامه بزن تا مراحل نصب و اتصالش را ببینی.</p>
+<div class="callout warn"><b>مهم:</b> اگر اینترنت بین‌الملل کاملاً قطع شود، هیچ‌کدام از این برنامه‌ها کار نمی‌کنند. من این ترتیب را از گزارش‌های خبری و راهنماها درآورده‌ام و خودم آزمایشش نکرده‌ام. فیلترینگ هر هفته عوض می‌شود. مراحل برای اندروید نوشته شده؛ روی <bdi dir="ltr">iPhone</bdi> مشابه است ولی ظاهر برنامه کمی فرق دارد.</div>
 <div class="rows">
 <a class="row glass" href="#app-psiphon"><span class="rk">۱</span><span class="rt"><b><bdi dir="ltr">Psiphon</bdi></b><small>بدون حساب کاربری. با ایمیل هم دانلود می‌شود.</small></span><svg class="chev" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></a>
 <a class="row glass" href="#app-proton"><span class="rk">۲</span><span class="rt"><b><bdi dir="ltr">Proton VPN</bdi></b><small>حالت <bdi dir="ltr">Stealth</bdi> برای عبور از فیلتر. حساب رایگان می‌خواهد.</small></span><svg class="chev" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></a>
@@ -272,7 +284,7 @@ footer.foot{text-align:center;color:var(--muted);font-size:13px;margin-top:22px;
 <div class="btns"><a class="btn main glass" href="https://t.me/scameryab_bot" target="_blank" rel="noopener"><bdi class="en" dir="ltr">@scameryab_bot</bdi> ↗</a></div></div>
 <div class="card glass"><h3>چطور استفاده کنم؟</h3>
 <ol class="steps"><li>تلگرام را باز کن و لینک بالا را بزن.</li><li>روی <b><bdi dir="ltr">Start</bdi></b> بزن و راهنمای خود ربات را دنبال کن.</li><li>اطلاعات فروشنده یا پیشنهاد مشکوک را همان‌طور که ربات می‌خواهد بفرست.</li></ol>
-<div class="callout warn">من این ربات را باز نکرده‌ام و نمی‌توانم درباره‌ی دقت آن قول بدهم. جواب ربات را فقط یک کمک بدان، نه تأیید نهایی.</div>
+<div class="callout ok"><b>تجربه‌ی سازنده:</b> در زمان قطعی اینترنت در جنگ، این ربات کمک زیادی به شناسایی افراد کلاهبردار کرد.</div>
 <div class="callout danger"><b>حواست باشد:</b> هیچ ربات یا فروشنده‌ای حق ندارد شماره‌ی کامل کارت، رمز دوم یا رمز حساب بانکی تو را بخواهد. اگر خواست، رد کن. ربات‌های جعلی بسیارند، پس نام کاربری را دقیق بررسی کن.</div></div>
 </section>
 
@@ -424,7 +436,7 @@ footer.foot{text-align:center;color:var(--muted);font-size:13px;margin-top:22px;
 </section>
 
 </main>
-<footer class="foot"><bdi dir="ltr">Nour</bdi> 0.4 · هیچ اطلاعات شخصی جمع‌آوری یا ارسال نمی‌شود.</footer>
+<footer class="foot"><bdi dir="ltr">Nour</bdi> 0.4 · خود برنامه هیچ اطلاعات شخصی جمع‌آوری یا ارسال نمی‌کند. فقط فونت از <bdi dir="ltr">Google Fonts</bdi> گرفته می‌شود.</footer>
 </div>
 <div class="dock"><nav class="glass" aria-label="بخش‌های اصلی">
 <a href="#" data-tab="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/></svg>خانه</a>

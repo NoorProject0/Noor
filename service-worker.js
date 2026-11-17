@@ -1,4 +1,4 @@
-const CACHE = "nour-pwa-v3";
+const CACHE = "nour-pwa-v4";
 const FILES = ["./", "./index.html", "./manifest.json", "./icons/nour.svg", "./icons/nour-192.png", "./icons/nour-512.png"];
 const FONT_HOSTS = ["fonts.googleapis.com", "fonts.gstatic.com"];
 self.addEventListener("install", e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting())));
